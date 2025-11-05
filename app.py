@@ -421,7 +421,7 @@ def login():
 
     # GET
     print("🌀 Login page rendered")
-    return render_template('login.html')
+    return render_template('sign-in.html')
 
 
 @app.route('/register', methods=['GET', 'POST'])
