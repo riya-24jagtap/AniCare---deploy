@@ -96,16 +96,31 @@ def allowed_file(filename):
 # ------------------- HELPERS -------------------
 @login_manager.user_loader
 def load_user(user_id):
-    """Load user from the single unified 'users' table."""
+    """Load user from any table based on ID."""
     try:
         user_id = int(user_id)
     except (TypeError, ValueError):
         return None
 
+    # Try in unified users table
     user = User.query.get(user_id)
     if user:
-        print(f"🔹 Loaded User: {user.email} ({user.role})")
+        print(f"🔹 Loaded User: {user.email} ({user.role}) from users")
         return user
+
+    # Try in vets table
+    vet = Vet.query.get(user_id)
+    if vet:
+        print(f"🔹 Loaded Vet: {vet.email}")
+        vet.role = "vet"
+        return vet
+
+    # Try in NGO table
+    ngo = NGO.query.get(user_id)
+    if ngo:
+        print(f"🔹 Loaded NGO: {ngo.email}")
+        ngo.role = "ngo"
+        return ngo
 
     print(f"⚠️ No user found with id {user_id}")
     return None
@@ -394,7 +409,7 @@ def login():
 
         # Password check (safe)
         try:
-            valid = check_password_hash(user.password, password)
+            valid = (user.password == password)
         except Exception as e:
             print(f"⚠️ check_password_hash raised: {e}")
             valid = False
