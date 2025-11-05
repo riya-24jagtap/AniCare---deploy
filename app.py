@@ -1243,22 +1243,19 @@ def get_vet_slots_with_bookings(vet_id, date_str):
 @app.route('/user_dashboard')
 @role_required('pet_owner')
 def user_dashboard():
-    user_id = session.get('user_id')
+    # ✅ Always use the logged-in user from Flask-Login
+    user = current_user
+    user_id = user.id  # actual logged-in ID
 
-    # Debug: Check if user_id is correctly retrieved from session
-    print("DEBUG: session user_id =", user_id)
+    print("DEBUG: current_user.id =", user_id)
 
-    # Fetch the pet owner name from the database
-    user = User.query.get(user_id)
-    if user:
-        print("DEBUG: fetched user object =", user)
-        user_name = user.name if user.name else "User"
-    else:
-        print("DEBUG: user not found in DB")
-        user_name = "User"
+    # ✅ Safe fallback for display name
+    user_name = user.name or "User"
 
-    user_role = session.get('role', 'Pet Owner').replace('_', ' ').title()
+    # ✅ Format role for UI
+    user_role = (session.get('role') or 'pet_owner').replace('_', ' ').title()
     print("DEBUG: user_role =", user_role)
+
 
     try:
         # ------------------- GET: Render Booking Page -------------------
@@ -1875,10 +1872,8 @@ def get_fixed_slots():
 @app.route('/book_appointment', methods=['GET', 'POST'])
 @role_required('pet_owner')
 def book_appointment():
-    # ------------------- Session Check -------------------
-    user_id = session.get('user_id')
-    if not user_id:
-        return redirect(url_for('login'))
+
+    owner_id = current_user.id  # ✅ Always use Flask-Login identity
 
     # ------------------- POST: Booking an Appointment -------------------
     if request.method == 'POST':
@@ -1887,10 +1882,9 @@ def book_appointment():
         vet_id = data.get('vet_id')
         appointment_date_str = data.get('date')
         appointment_time_str = data.get('slot')
-        reason = (data.get('reason') or '').strip()  # Always default to empty string
+        reason = (data.get('reason') or '').strip()
 
         try:
-            # Convert date/time strings to objects
             appt_date_obj = datetime.strptime(appointment_date_str, "%Y-%m-%d").date()
             appt_time_obj = datetime.strptime(appointment_time_str, "%H:%M").time()
 
@@ -1914,18 +1908,20 @@ def book_appointment():
                 """),
                 {"vet_id": vet_id, "appt_date": appointment_date_str, "appt_time": appointment_time_str}
             ).fetchone()
+
             if overlapping:
                 return jsonify({'success': False, 'error': 'This slot is already booked.'}), 400
 
-            # Fetch pet info
+            # Fetch pet info (✅ owner_id fixed)
             pet = db.session.execute(
                 text("""
                     SELECT pet_name, species AS pet_type
                     FROM pet_records
                     WHERE id=:pet_id AND owner_id=:owner_id
                 """),
-                {"pet_id": pet_id, "owner_id": user_id}
+                {"pet_id": pet_id, "owner_id": owner_id}
             ).mappings().first()
+
             if not pet:
                 return jsonify({'success': False, 'error': 'Pet not found for this user.'}), 404
 
@@ -1934,10 +1930,11 @@ def book_appointment():
                 text("SELECT name FROM vets WHERE id=:vet_id"),
                 {"vet_id": vet_id}
             ).mappings().first()
+
             if not vet:
                 return jsonify({'success': False, 'error': 'Vet not found.'}), 404
 
-            # Insert appointment
+            # Insert appointment (✅ user_id uses owner_id)
             db.session.execute(
                 text("""
                     INSERT INTO appointments
@@ -1947,7 +1944,7 @@ def book_appointment():
                 {
                     "vet_id": vet_id,
                     "pet_id": pet_id,
-                    "user_id": current_user.id,
+                    "user_id": owner_id,
                     "pet_name": pet['pet_name'],
                     "appt_date": appointment_date_str,
                     "appt_time": appointment_time_str,
@@ -1965,12 +1962,8 @@ def book_appointment():
 
     # ------------------- GET: Render Booking Page -------------------
     pets = db.session.execute(
-        text("""
-            SELECT id, pet_name 
-            FROM pet_records 
-            WHERE (owner_id=:uid OR user_id=:uid)
-        """),
-        {"uid": current_user.id}
+        text("SELECT id, pet_name FROM pet_records WHERE owner_id=:owner_id"),
+        {"owner_id": owner_id}
     ).mappings().all()
 
     vets = db.session.execute(
@@ -1985,12 +1978,11 @@ def book_appointment():
                    a.reason, a.status
             FROM appointments a
             LEFT JOIN vets v ON a.vet_id = v.id
-            WHERE a.user_id=:user_id
+            WHERE a.user_id=:owner_id
             ORDER BY a.appointment_date DESC, a.appointment_time ASC
-        """), {"user_id": user_id}
+        """), {"owner_id": owner_id}
     ).mappings().all()
 
-    # Format appointments
     formatted_appointments = []
     for appt in appointments:
         slot_time = appt['appt_time']
@@ -2003,7 +1995,7 @@ def book_appointment():
             'slot': slot_str,
             'date': appt_date_iso,
             'status': appt['status'],
-            'reason': appt['reason'] or ''  # Ensure reason is never undefined
+            'reason': appt['reason'] or ''
         })
 
     return render_template(
