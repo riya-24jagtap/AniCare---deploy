@@ -27,12 +27,12 @@
 
 <div class="form-container">
   <form id="appointmentForm" method="POST">
-    <!-- ✅ Added missing selects -->
+    <!--  Added missing selects -->
     <label for="pet_id">Select Pet:</label>
     <select id="pet_id" name="pet_id" required>
       <option value="">-- Select Pet --</option>
       {% for pet in pets %}
-      <option value="{{ pet.id }}">{{ pet.name }}</option>
+      <option value="{{ pet.id }}">{{ pet.pet_name }}</option>
       {% endfor %}
     </select>
 
