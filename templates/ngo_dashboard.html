@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+  <title>ANICARE - NGO Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/ngo_dashboard.css') }}">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <img src="{{ url_for('static', filename='images/anicare_logo.png') }}" alt="AniCare Logo" class="logo-img">
+    </div>
+    <nav>
+      <a href="{{ url_for('home') }}">Home</a>
+      <a href="{{ url_for('about') }}">About</a>
+      <a href="{{ url_for('contact') }}">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Horizontal Navigation Tabs -->
+  <div class="tab-nav">
+    <button onclick="showSection('dashboard')" class="active">Dashboard</button>
+    <button onclick="showSection('cases')">Cases</button>
+  </div>
+
+  <div class="content">
+
+    <!-- Dashboard Section -->
+    <div id="dashboard">
+
+      <!-- Left Profile Box -->
+      <div class="ngo-info-box">
+        <div class="ngo-logo">🐾</div>
+        <h2>{{ ngo_info.name }}</h2>
+        <p><strong>Logged in as:</strong> {{ ngo_info.admin }}</p>
+        <p><strong>Email:</strong> {{ ngo_info.email }}</p>
+        <p><strong>Contact:</strong> {{ ngo_info.contact }}</p>
+      </div><br>
+
+      <!-- Right Dashboard Cards + Alerts -->
+      <div class="dashboard-main">
+
+        <!-- Cards -->
+        <div class="dashboard-cards">
+          <div class="card">
+            <h3>Pending Cases</h3>
+            <p id="casesPending">0</p>
+          </div>
+          <div class="card">
+            <h3>In Progress</h3>
+            <p id="casesInProgress">0</p>
+          </div>
+          <div class="card">
+            <h3>Resolved</h3>
+            <p id="casesResolved">0</p>
+          </div>
+        </div>
+
+        <!-- Alerts -->
+        <div class="alerts-card">
+          <h3>Alerts</h3>
+          <ul id="alertsList">
+            <li>No new alerts</li>
+          </ul>
+        </div>
+
+      </div> <!-- end dashboard-main -->
+
+    </div> <!-- end dashboard -->
+
+    <!-- Cases Section -->
+    <div id="cases" style="display:none;">
+
+      <div class="table-container">
+        <h3>Active Cases</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Animal</th>
+              <th>Description</th>
+              <th>Photo</th> <!-- Add this -->
+              <th>Reporter</th>
+              <th>Reported At</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+
+          <tbody id="casesTableBody">
+            <!-- JS will populate active cases here -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-container" style="margin-top:20px;">
+        <h3>Resolved Cases</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th><th>Animal</th><th>Description</th><th>Photo</th>
+              <th>Reporter</th><th>Reported At</th><th>Status</th><th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="resolvedCasesTableBody">
+            <!-- JS will populate resolved cases here -->
+          </tbody>
+        </table>
+      </div>
+
+    </div> <!-- end cases -->
+
+  </div> <!-- end content -->
+  <!-- Image Modal -->
+  <div id="photoModal" class="modal">
+    <span class="modal-close">&times;</span>
+    <img class="modal-content" id="modalImg">
+    <div id="caption"></div>
+  </div>
+
+
+  <!-- JS -->
+  <script src="{{ url_for('static', filename='js/ngo_dashboard.js') }}"></script>
+  <script>
+    // Initialize default section
+    showSection('dashboard');
+  </script>
+
+</body>
+</html>

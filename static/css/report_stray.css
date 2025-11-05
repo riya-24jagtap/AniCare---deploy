@@ -1,0 +1,300 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+
+.choose-btn.wide {
+  width: 68%;       /* instead of 100% */
+  padding: 6px 16px; 
+}
+
+
+.choose-btn:hover {
+  background-color: #a07f60;
+}
+
+.file-clear {
+  color: #c00;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.btn-cancel {
+  background-color: #f3f3f3;
+  color: #444;
+  border: none;
+  padding: 3px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.btn-cancel:hover {
+  background-color: #ddd;
+}
+
+.header {
+  background-color: var(--header-bg);
+  color: white;
+  padding: 16px 30px;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #d1a87a; 
+  padding: 10px 30px;
+  height: 80px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.logo-img {
+  height: 69px;
+  width: 69px;
+  object-fit: contain;
+}
+.logo {
+  display: none; /* OR delete */
+}
+nav {
+  display: flex;
+  align-items: center;
+}
+
+nav a {
+  position: relative;
+  text-decoration: none;
+  color: #3b2515;
+  margin-left: 25px;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 5px 0;
+}
+
+/* Underline hover effect */
+nav a::after {
+  content: '';
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background-color: #3b2515;
+  left: 0;
+  bottom: -5px;
+  transition: width 0.3s ease;
+}
+
+nav a:hover::after,
+nav a.active::after {
+  width: 100%;
+}
+
+.container {
+  max-width: 750px;  
+  margin: 50px auto;
+  background: rgba(255, 255, 255, 0.6); /* 60% opacity */
+  padding: 20px 10px;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+}
+
+form label {
+  font-weight: 600;
+  display: block;
+  margin-top: 18px;
+  color: #333;
+}
+
+form select,
+form input[type="text"],
+form textarea,
+form input[type="file"] {
+  width: 100%;
+  padding: 10px 14px;
+  margin-top: 6px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  box-sizing: border-box;
+}
+
+form textarea {
+  resize: vertical;
+}
+
+
+h2 {
+  text-align: center;
+  color: #5C6AC4;
+  margin-bottom: 20px;
+}
+
+.btn-back {
+  background-color: #8F9779;
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+.btn-back:hover {
+  background-color: #6d765e;
+
+}
+label {
+  font-weight: 600;
+  display: block;
+  margin-top: 15px;
+}
+
+select, input[type="text"], textarea, input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+
+textarea {
+  resize: vertical;
+}
+
+button {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px;
+  background-color: #3d3d29;
+  color: white;
+  font-weight: 700;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #4e342e; /* matches your header */
+  transform: scale(1.03);
+}
+
+button:disabled {
+  background-color: #f1e4d3;
+  color: #9e8261;
+  cursor: not-allowed;
+}
+.note {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #555;
+}
+
+.location-box {
+  margin-top: 10px;
+  color: #333;
+  font-style: italic;
+}
+
+#nearbyResults {
+  margin-top: 20px;
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 10px;
+  background: #f0f4ff;
+}
+
+.result-item {
+  margin-bottom: 10px;
+}
+/* Flex container for button + preview */
+.custom-file-input {
+  display: flex;
+  align-items: center;
+  gap: 15px;  /* space between button and preview */
+}
+
+/* Preview wrapper for each image */
+#photoPreview div {
+  position: relative;
+  display: inline-block;
+}
+
+/* Image preview */
+#photoPreview img {
+  height: 80px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* Cancel button overlay */
+#photoPreview .cancel-btn {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: red;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+}
+.status-pending {
+  color: #f0ad4e;
+  font-weight: bold;
+}
+.status-assigned {
+  color: #5bc0de;
+  font-weight: bold;
+}
+.status-completed {
+  color: #5cb85c;
+  font-weight: bold;
+}
+.reports-table-container {
+  overflow-x: auto;
+  margin: 20px;
+}
+#reportsTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+#reportsTable th, #reportsTable td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+#reportsTable th {
+  background-color: #f2f2f2;
+}

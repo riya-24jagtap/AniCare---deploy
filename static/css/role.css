@@ -1,0 +1,178 @@
+/* ====== Reset & Base Styles ====== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+html, body {
+  height: 100%;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  background: url('/static/images/bg2.jpg') no-repeat center center;
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  color: #3b2515;
+}
+.main-content {
+  flex: 1;
+}
+
+/* ====== Header ====== */
+header {
+  background-color: #d1a87a;
+  padding: 10px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 85px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+.logo {
+  width: 75spx;
+  height: 75px;
+  margin-right: 5px; 
+  margin-left: -20px;
+}
+.logo img{
+  width: 70px;
+  height: 70px;
+}
+nav {
+  display: flex;
+  align-items: center;
+}
+nav a {
+  position: relative;
+  text-decoration: none;
+  color: #3b2515;
+  margin-left: 25px;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 5px 0;
+}
+nav a::after {
+  content: '';
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background-color: #3b2515;
+  left: 0;
+  bottom: -5px;
+  transition: width 0.3s ease;
+}
+nav a:hover::after,
+nav a.active::after {
+  width: 100%;
+}
+
+/* ====== Role Section Heading ====== */
+.role-heading {
+  text-align: center;
+  margin: 40px auto 30px;
+}
+.role-heading h1 {
+  display: inline-block;
+  padding: 15px 40px;
+  font-size: 28px;
+  font-weight: 800;
+  background-color: #f5e2c0;
+  color: #5b3c1a;
+  border: 3px solid #5b3c1a;
+  border-radius: 20px;
+  text-transform: uppercase;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* ====== Role Cards Container ====== */
+.roles-container {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  padding: 2rem;
+}
+
+/* ====== Individual Role Card ====== */
+.role-card {
+  background: #fffdf9;
+  border-radius: 20px;
+  padding: 30px 20px;
+  width: 280px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.role-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 14px 24px rgba(0, 0, 0, 0.15);
+}
+.role-card img.role-image {
+  width: 130px;
+  height: 130px;
+  object-fit: contain;
+  margin-bottom: 20px;
+}
+.role-card h2 {
+  color: #3b2515;
+  margin-bottom: 10px;
+  font-size: 22px;
+}
+.role-card p {
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 20px;
+  padding: 0 10px;
+}
+
+/* ====== Role Button (Stylized Tab Style) ====== */
+.role-button {
+  display: inline-block;
+  padding: 14px 34px;
+  font-size: 15px;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+  border-radius: 0 40px 40px 0;
+  background-color: #a77b54;
+  position: relative;
+  transition: background 0.3s ease;
+}
+.role-button::before {
+  content: '';
+  position: absolute;
+  left: -50px;
+  top: 0;
+  width: 50px;
+  height: 100%;
+  background-color: #a77b54;
+  border-radius: 50px 0 0 50px;
+}
+.role-button:hover {
+  background-color: #a77b54;
+}
+.role-button:hover::before {
+  background-color: #a77b54;
+}
+
+/* ====== Footer ====== */
+footer {
+  background: #fcefdc;
+  padding: 12px 20px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b3b1e;
+  border-top: 1px solid #d1a87a;
+}
+
+/* ====== Responsive Fix ====== */
+@media (max-width: 900px) {
+  .roles-container {
+    flex-direction: column;
+    align-items: center;
+  }
+}

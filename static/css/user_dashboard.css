@@ -1,0 +1,219 @@
+:root {
+  --bg-main: #F7EFE4;
+  --header-bg: #B99976;
+  --header-text: #4B3621;
+  --text-dark: #2E2E2E;
+  --btn-1: #D88259;
+  --btn-2: #8F9779;
+  --btn-3: #E3B778;
+  --btn-4: #6A8D92; 
+  --btn-5: #E79A92;
+  --border-dark: rgba(75, 54, 33, 0.25);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fdf6ed; /* keep page beige */
+}
+
+
+
+
+header {
+  background-color: #f1d9ba;
+  padding: 10px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 85px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+  width: 75px;
+  height: 75px;
+  margin-right: 5px; 
+  margin-left: -20px;
+}
+.logo img{
+  width: 70px;
+  height: 70px;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+}
+nav a {
+  position: relative;
+  text-decoration: none;
+  color: #3b2515;
+  margin-left: 25px;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 5px 0;
+}
+nav a::after {
+  content: '';
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background-color: #3b2515;
+  left: 0;
+  bottom: -5px;
+  transition: width 0.3s ease;
+}
+nav a:hover::after,
+nav a.active::after {
+  width: 100%;
+}
+/* Logout button like vet dashboard */
+.logout-btn {
+    padding: 8px 16px;
+    border: none;
+    background: var(--accent1);
+    color: white;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background var(--transition), transform var(--transition);
+}
+
+.logout-btn:hover {
+    background: var(--accent2);
+    transform: translateY(-2px);
+}
+
+/* Keep nav links aligned */
+nav a.logout-btn {
+    margin-left: 25px;
+    text-decoration: none;
+}
+
+.content {
+  display: flex;
+  justify-content: flex-start; /* keep container on left */
+  align-items: center;
+  min-height: 88vh; /* reduce overall height from 100vh */
+  padding-left: 60px;
+  background: url("../images/user_dashboardbg.jpg") no-repeat right center;
+  background-size: 99.99% auto; /* increase width to cover extra space */
+  background-position: left center; 
+}
+
+
+
+.dashboard-container {
+  background: #d9d9d9;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-radius: 50px;
+  width: 600px;   /* fixed width so it doesn’t shrink */
+  padding: 40px 30px 60px;
+  box-shadow: 0 8px 30px rgba(70, 57, 57, 0.1);
+  border: 1px solid rgba(136, 134, 134, 0.25);
+  text-align: center;
+}
+.welcome {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text-dark);
+  letter-spacing: 0.5px;
+}
+
+h1 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 40px;
+}
+.btn-2 {
+  background-color: #8F9779 !important;
+  color: white !important;
+}
+
+
+.action-btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  margin: 15px 0;
+  border: 1.8px solid var(--border-dark);
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-dark);
+  cursor: pointer;
+  transition: 0.3s ease;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  background-clip: padding-box;
+}
+
+.btn-1 { background-color: var(--btn-1); }
+.btn-2 { background-color: var(--btn-2); }
+.btn-3 { background-color: var(--btn-3); }
+.btn-4 { background-color: var(--btn-4); }
+.btn-5 { background-color: var(--btn-5); }
+
+
+.action-btn:hover {
+  transform: translateY(-3px);
+  opacity: 0.92;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
+}
+
+#main-dashboard-grid {
+    position: relative; 
+}
+
+
+
+
+.action-card-left {
+    width: 450px; 
+}
+
+.profile-box {
+    position: absolute; 
+    top: 150px; 
+    right: 110px; 
+    width: 390px; 
+    padding: 12px 15px;
+    background-color: #f7e4d8; 
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+    text-align: left;
+    z-index: 100;
+}
+
+.profile-box p {
+    margin: 0;
+    font-size: 17.9px;
+    font-weight: 700;;
+    line-height: 1.3;
+    color: #27180e;
+}
+
+@media (max-width: 500px) {
+  .dashboard-container {
+    padding: 50px 20px 90px;
+  }
+
+  h1 {
+    font-size: 26px;
+  }
+
+  .nav-links {
+    gap: 15px;
+    font-size: 14px;
+  }
+}

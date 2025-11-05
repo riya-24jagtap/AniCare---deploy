@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+<title>Register / Edit Your Pet - ANICARE</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pet_register.css') }}">
+</head>
+<body style="background: url('{{ url_for('static', filename='images/user_db_panel2.jpg') }}') no-repeat center center fixed; background-size: cover;">
+
+<header>
+  <div class="logo">
+    <img src="{{ url_for('static', filename='images/anicare_logo.png') }}" alt="AniCare Logo">
+  </div>
+  <nav>
+    <a href="{{ url_for('home') }}">Home</a>
+    <a href="{{ url_for('about') }}">About</a>
+    <a href="{{ url_for('contact') }}">Contact</a>
+  </nav>
+</header>
+
+<h1 style="text-align: center; margin-bottom: 20px; font-size: 45px">Register / Edit Your Pet</h1>
+
+<div style="text-align: right; margin: 10px 20px;">
+  <a href="{{ url_for('user_dashboard') }}" class="btn-back">← Back to Dashboard</a>
+</div>
+
+<!-- Alert container for messages -->
+<div id="alertContainer" style="max-width: 800px; margin: 0 auto; padding: 0 20px;"></div>
+
+<form class="form-container" id="petForm">
+<h2 style="text-align:center; margin-top:30px;">Your Pets</h2>
+<div id="userPets" style="max-width:800px; margin:0 auto 30px auto;">
+  {% if pets %}
+    {% for p in pets %}
+      <div class="pet-card" data-pet-id="{{ p.id }}" style="border:1px solid #ccc; padding:10px; margin-bottom:5px; display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <strong>{{ p.pet_name }}</strong> ({{ p.species }})
+        </div>
+        <div>
+          <button type="button" class="btn-edit" data-pet-id="{{ p.id }}">Edit</button>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p id="noPetsMsg" style="text-align:center;">No pets registered yet.</p>
+  {% endif %}
+</div>
+
+  <!-- Hidden pet_id and action -->
+  <input type="hidden" name="pet_id" id="pet_id" value="{{ pet.id if pet else '' }}">
+  <input type="hidden" name="action" id="actionInput" value="save">
+
+  <!-- 1. Basic Pet Details -->
+  <div class="form-section">
+    <h2>1. Basic Pet Details</h2>
+    <div class="form-group">
+      <label for="petName">Pet Name:</label>
+      <input type="text" id="petName" name="pet_name"  value="{{ pet.pet_name if pet else '' }}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="species">Pet Type:</label>
+      <select name="species" id="species_main">
+        <option value="Dog" {% if pet.species == 'Dog' %}selected{% endif %}>Dog</option>
+        <option value="Cat" {% if pet.species == 'Cat' %}selected{% endif %}>Cat</option>
+        <option value="Other" {% if pet and pet.species not in ['Dog','Cat'] %}selected{% endif %}>Other</option>
+      </select>
+      <input type="text" name="other_species" id="other_species_main" placeholder="Enter pet type"
+        value="{% if pet and pet.species not in ['Dog','Cat'] %}{{ pet.species }}{% endif %}" style="display:none; max-width:220px; margin-left:10px;">
+    </div>
+
+    <div class="form-group">
+      <label for="breed">Breed:</label>
+      <input type="text" id="breed" name="breed"  value="{{ pet.breed if pet else '' }}">
+    </div>
+
+    <div class="form-group">
+      <label for="gender">Gender:</label>
+      <select id="gender" name="gender">
+        <option value="Male" {% if pet.gender == 'Male' %}selected{% endif %}>Male</option>
+        <option value="Female" {% if pet.gender == 'Female' %}selected{% endif %}>Female</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="dob">Date of Birth:</label>
+      <input type="date" name="dob" id="dob" value="{{ pet.dob.strftime('%Y-%m-%d') if pet and pet.dob else '' }}">
+    </div>
+
+    <div class="form-group">
+      <label for="color">Color:</label>
+      <input type="text" id="color" name="color"  value="{{ pet.color if pet else '' }}">
+    </div>
+  </div>
+
+  <!-- 2. Medical Info -->
+  <div class="form-section">
+    <h2>2. Medical Info</h2>
+    <div class="form-group">
+      <label for="vaccination">Vaccination Status:</label>
+      <select id="vaccination" name="vaccination_status">
+        <option value="Up-to-date" {% if pet.vaccination_status == 'Up-to-date' %}selected{% endif %}>Up-to-date</option>
+        <option value="Not Vaccinated" {% if pet.vaccination_status == 'Not Vaccinated' %}selected{% endif %}>Not Vaccinated</option>
+        <option value="Partially Vaccinated" {% if pet.vaccination_status == 'Partially Vaccinated' %}selected{% endif %}>Partially Vaccinated</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label for="conditions">Ongoing Medical Conditions:</label>
+      <textarea id="conditions" name="medical_history" rows="3" placeholder="Optional">{{ pet.medical_history if pet else '' }}</textarea>
+    </div>
+  </div>
+
+  <!-- 3. Pet Photo Upload -->
+  <div class="form-section">
+    <h2>3. Pet Photo Upload</h2>
+    <div class="form-group">
+      <label for="photo">Upload Profile Picture:</label>
+      <div class="custom-file-input">
+        <button type="button" class="choose-btn wide">Choose File</button>
+        <input type="file" id="photo" name="photo" accept="image/png, image/jpeg" data-preview="photoPreview" style="display:none;">
+        <span class="file-clear">&times;</span>
+      </div>
+      <div id="photoPreview" style="margin-top:10px;">
+        {% if pet and pet.photo_path %}
+          <img src="{{ url_for('static', filename=pet.photo_path) }}" alt="Pet Photo" style="height:80px;">
+          <button type="button" class="btn-cancel" onclick="removePhoto('photo','photoPreview')">✖ Cancel</button>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="buttons" style="margin-top:20px;">
+    <button type="submit" id="saveBtn" class="btn-save">Save Changes</button>
+    <button type="button" id="showAddPetBtn" class="btn-add">+ Add New Pet</button>
+  </div>
+</form>
+
+<script>
+
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('petForm');
+  const saveBtn = document.getElementById('saveBtn');
+  const alertContainer = document.getElementById('alertContainer');
+  const speciesSelect = document.getElementById('species_main');
+  const otherSpeciesInput = document.getElementById('other_species_main');
+  const userPetsContainer = document.getElementById('userPets');
+
+  // ---------------- FUNCTION TO SHOW ALERTS ----------------
+  function showAlert(message, type) {
+    alertContainer.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+    setTimeout(() => alertContainer.innerHTML = '', 5000);
+  }
+
+  // ---------------- TOGGLE 'OTHER' SPECIES INPUT ----------------
+  function toggleOtherInput() {
+    otherSpeciesInput.style.display = speciesSelect.value === 'Other' ? 'inline-block' : 'none';
+  }
+  toggleOtherInput();
+  speciesSelect.addEventListener('change', toggleOtherInput);
+
+  // ---------------- FUNCTION TO LOAD PET INTO FORM ----------------
+  function loadPetIntoForm(petId) {
+    fetch(`/get_pet_json?pet_id=${petId}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          const pet = data.pet;
+          document.getElementById('pet_id').value = pet.id;
+          document.getElementById('actionInput').value = 'save';
+          document.getElementById('petName').value = pet.pet_name || '';
+          document.getElementById('breed').value = pet.breed || '';
+          document.getElementById('gender').value = pet.gender || 'Male';
+          document.getElementById('dob').value = pet.dob || '';
+          document.getElementById('color').value = pet.color || '';
+          document.getElementById('vaccination').value = pet.vaccination_status || 'Up-to-date';
+          document.getElementById('conditions').value = pet.medical_history || '';
+          document.getElementById('species_main').value = (['Dog','Cat'].includes(pet.species) ? pet.species : 'Other');
+          document.getElementById('other_species_main').value = (['Dog','Cat'].includes(pet.species) ? '' : pet.species);
+          toggleOtherInput();
+
+          // Photo
+          if (pet.photo_path) {
+            document.getElementById('photoPreview').innerHTML = `
+              <img src="/static/${pet.photo_path}" alt="Pet Photo" style="height:80px;">
+              <button type="button" class="btn-cancel" onclick="removePhoto('photo','photoPreview')">✖ Cancel</button>`;
+          } else {
+            removePhoto('photo','photoPreview');
+          }
+        } else {
+          showAlert(data.message, 'error');
+        }
+      });
+  }
+
+  // ---------------- ATTACH EDIT BUTTONS ----------------
+  function attachEditButtons() {
+    document.querySelectorAll('.btn-edit').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const petId = btn.dataset.petId;
+        loadPetIntoForm(petId);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+  }
+  attachEditButtons();
+
+  // ---------------- AJAX FORM SUBMISSION ----------------
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+    const petId = document.getElementById('pet_id').value;
+    const actionInput = document.getElementById('actionInput');
+
+    actionInput.value = (petId && petId.trim() !== '' && petId !== 'None' && petId !== 'null') ? 'save' : 'add';
+    formData.set('action', actionInput.value);
+
+    if (speciesSelect.value === 'Other') {
+      formData.set('species', otherSpeciesInput.value.trim());
+    } else {
+      formData.set('species', speciesSelect.value);
+    }
+
+    saveBtn.classList.add('btn-loading');
+    saveBtn.disabled = true;
+    form.classList.add('loading');
+
+    try {
+      const response = await fetch('/pet_register', {
+        method: 'POST',
+        body: formData,
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+      });
+
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      const result = await response.json();
+
+      if (result.success) {
+        showAlert(result.message, 'success');
+
+        // Update or add pet in the pets list dynamically
+        const petCardHTML = `
+          <div class="pet-card" data-pet-id="${result.pet_id}" style="border:1px solid #ccc; padding:10px; margin-bottom:5px; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <strong>${formData.get('pet_name')}</strong> (${formData.get('species')})
+            </div>
+            <div>
+              <button type="button" class="btn-edit" data-pet-id="${result.pet_id}">Edit</button>
+            </div>
+          </div>
+        `;
+
+        const existingCard = userPetsContainer.querySelector(`.pet-card[data-pet-id="${result.pet_id}"]`);
+        if (existingCard) {
+          existingCard.outerHTML = petCardHTML;
+        } else {
+          // remove "No pets registered yet" message if exists
+          const noPetsMsg = document.getElementById('noPetsMsg');
+          if (noPetsMsg) noPetsMsg.remove();
+          userPetsContainer.insertAdjacentHTML('beforeend', petCardHTML);
+        }
+
+        attachEditButtons(); // re-attach edit buttons
+
+        // Reset form if it was "add"
+        if (actionInput.value === 'add') {
+          form.reset();
+          document.getElementById('pet_id').value = '';
+          document.getElementById('actionInput').value = 'add';
+          removePhoto('photo', 'photoPreview');
+          toggleOtherInput();
+        }
+      } else {
+        showAlert(result.message, 'error');
+      }
+
+    } catch (error) {
+      console.error('Full error details:', error);
+      showAlert(`An error occurred while saving: ${error.message}`, 'error');
+    } finally {
+      saveBtn.classList.remove('btn-loading');
+      saveBtn.disabled = false;
+      form.classList.remove('loading');
+    }
+  });
+
+  // ---------------- FILE INPUT & PREVIEW ----------------
+  window.removePhoto = function(inputId, previewId) {
+    const fileInput = document.getElementById(inputId);
+    const previewContainer = document.getElementById(previewId);
+    if (fileInput) fileInput.value = "";
+    if (previewContainer) previewContainer.innerHTML = "";
+    
+    const wrapper = fileInput.closest('.custom-file-input');
+    if (wrapper) {
+      const button = wrapper.querySelector('.choose-btn');
+      if (button) button.textContent = "Choose File";
+      const clearBtn = wrapper.querySelector('.file-clear');
+      if (clearBtn) clearBtn.style.display = 'none';
+    }
+  };
+
+  document.querySelectorAll('.custom-file-input').forEach(wrapper => {
+    const button = wrapper.querySelector('.choose-btn');
+    const fileInput = wrapper.querySelector('input[type="file"]');
+    const clearBtn = wrapper.querySelector('.file-clear');
+    const previewId = fileInput.dataset.preview;
+
+    button.addEventListener('click', () => fileInput.click());
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files && fileInput.files.length > 0) {
+        button.textContent = fileInput.files[0].name;
+        if (previewId) {
+          const reader = new FileReader();
+          reader.onload = e => {
+            document.getElementById(previewId).innerHTML = `
+              <div class="preview-container">
+                <img src="${e.target.result}" style="height:80px;">
+                <button type="button" class="btn-cancel" onclick="removePhoto('${fileInput.id}', '${previewId}')">✖ Cancel</button>
+              </div>`;
+          };
+          reader.readAsDataURL(fileInput.files[0]);
+        }
+      } else {
+        button.textContent = "Choose File";
+        if (previewId) document.getElementById(previewId).innerHTML = "";
+      }
+    });
+
+    clearBtn?.addEventListener('click', () => removePhoto(fileInput.id, previewId));
+  });
+
+  // ---------------- ADD NEW PET BUTTON ----------------
+  document.getElementById('showAddPetBtn')?.addEventListener('click', () => {
+    document.getElementById('pet_id').value = "";
+    document.getElementById('actionInput').value = "add";
+    form.reset();
+    removePhoto('photo', 'photoPreview');
+    toggleOtherInput();
+    alertContainer.innerHTML = '';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+</script>
+</body>
+</html>

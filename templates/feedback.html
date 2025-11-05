@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="images/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+  <title>Feedback</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/feedback.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+</head>
+<body>
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <img src="{{ url_for('static', filename='images/anicare_logo.png') }}" alt="AniCare Logo" class="logo" />
+    </div>
+    <nav>
+      <a href="{{ url_for('home') }}">HOME</a>
+      <a href="{{ url_for('about') }}">ABOUT</a>
+      <a href="{{ url_for('contact') }}">CONTACT</a>
+      
+    </nav>
+  </header>
+
+    <main class="feedback-section">
+
+      <!-- Flash messages below the navbar -->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flash-container">
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }}">
+                {{ message }}
+                <span class="close-btn">&times;</span>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      <form class="feedback-form" method="POST" action="{{ url_for('feedback') }}">
+          <h1><i class="fa-solid fa-dog"></i> GIVE US YOUR FEEDBACK <i class="fa-solid fa-dog"></i></h1>
+          <p>Tell us what you love, hate, or want to see next. Your feedback helps us improve AniCare!</p>
+
+          <div class="input-row">
+            <input type="text" name="name" placeholder="Name" required>
+            <input type="email" name="email" placeholder="Email" required>
+          </div>
+
+          <textarea name="message" placeholder="Write your feedback..." required></textarea>
+          <button type="submit">Submit</button>
+        </form>
+
+
+  </main>
+
+
+  <!-- FOOTER -->
+  <footer>
+    <h3>Get in touch, we’re all ears!</h3>
+    <div class="footer-contact">
+      <div class="contact-info">
+        <p>📞+91 8433901697</p>
+      </div>
+      <div class="email-info">
+        <p>📩 anicare.contactus@gmail.com</p>
+      </div>
+      <div class="footer-links">
+        <a href="#">Feedback</a>
+        <a href="#">Terms of service</a>
+        <a href="#">Privacy policy</a>
+      </div>
+    </div>
+  </footer>
+  <script>
+    // Auto-hide flash messages after 3s with fadeOut
+    setTimeout(() => {
+      const flash = document.querySelector('.flash-container');
+      if (flash) {
+        flash.classList.add('hide');
+        setTimeout(() => flash.style.display = 'none', 500); // remove after animation
+      }
+    }, 3000);
+
+    // Manual close (using ✖ button)
+    document.addEventListener("click", function(e) {
+      if (e.target.classList.contains("close-btn")) {
+        const alertBox = e.target.parentElement;
+        alertBox.classList.add("hide");
+        setTimeout(() => alertBox.style.display = "none", 500);
+      }
+    });
+  </script>
+</body>
+</html>

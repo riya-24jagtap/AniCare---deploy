@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+  <title>Sign In</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/sign-in.css') }}">
+</head>
+
+<body>
+  <!-- Hidden logout form (placed correctly inside body) -->
+  <form id="logout-form" action="{{ url_for('logout') }}" method="POST" style="display: none;"></form>
+
+  <header>
+    <div class="logo">
+      <img src="{{ url_for('static', filename='images/anicare_logo.png') }}" alt="AniCare Logo">
+    </div>
+    <nav>
+      <a href="{{ url_for('home') }}">HOME</a>
+    </nav>
+  </header>
+
+  <main class="main-container">
+    <section class="left">
+      <h2>SIGN IN</h2>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flash-container">
+            {% for category, message in messages %}
+              <div class="flash-message {{ category }}">{{ message }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      <form method="POST" action="{{ url_for('login') }}">
+        <div class="role-select-container">
+          <select name="role" class="role-dropdown" required>
+            <option hidden selected>Choose your role</option>
+            <option value="vet">VET</option>
+            <option value="pet_owner">PET OWNER</option>
+            <option value="ngo">NGO</option>
+          </select>
+        </div>
+
+        <input type="email" name="email" placeholder="Email ID" required value="{{ request.form.get('email','') }}">
+        
+        <div class="password-wrapper">
+          <input type="password" name="password" placeholder="Password" required>
+          <span class="toggle-password">🔒</span>
+        </div>
+
+        <button type="submit" class="login-btn">Login</button>
+      </form>
+
+      <p style="margin-top: 12px;">
+        New user? 
+        <a href="{{ url_for('register') }}" style="text-decoration: underline;">Register</a>
+      </p>
+    </section>
+
+    <section class="right">
+      <img src="{{ url_for('static', filename='images/dog.png') }}" alt="Dog" class="pic" />
+      <h2>WELCOME!</h2>
+      <p>
+        <strong>Greetings from AniCare!</strong><br><br>
+        Keep up with your pets’ health, help with rescues, and connect with fellow animal lovers.<br><br>
+        Not registered yet? Sign up today and join our growing community of animal enthusiasts!
+      </p>
+      <a href="{{ url_for('register') }}">
+        <button type="button" class="register-btn">REGISTER</button>
+      </a>
+    </section>
+  </main>
+
+  <footer>
+    <h3>Get in touch, we’re all ears!</h3>
+    <div class="footer-contact">
+      <div class="contact-info">
+        <p>📞 +91 8433901697</p>
+      </div>
+      <div class="email-info">
+        <p>📩 anicare.contactus@gmail.com</p>
+      </div>
+      <div class="footer-links">
+        <a href="#">Feedback</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Privacy Policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/sign-in.js') }}"></script>
+</body>
+</html>

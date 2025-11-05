@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ANICARE - Add Volunteer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/ngo_dashboard.css') }}">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <img src="{{ url_for('static', filename='images/anicare_logo.png') }}" alt="AniCare Logo">
+    </div>
+    <nav>
+      <a href="{{ url_for('home') }}">Home</a>
+      <a href="{{ url_for('about') }}">About</a>
+      <a href="{{ url_for('contact') }}">Contact</a>
+      <a href="{{ url_for('logout') }}" class="btn ghost">Logout</a>
+    </nav>
+  </header>
+
+  <!-- Form Container -->
+  <div class="content">
+    <h2>Add Volunteer</h2>
+    <form action="{{ url_for('add_volunteer') }}" method="POST" class="form-container">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="name" placeholder="Enter full name" required>
+
+      <label for="contact">Contact Number</label>
+      <input type="text" id="contact" name="contact" placeholder="Enter contact number" required>
+
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" placeholder="Enter email" required>
+
+      <label for="status">Status</label>
+      <select id="status" name="status" required>
+        <option value="Available">Available</option>
+        <option value="Busy">Busy</option>
+      </select>
+
+      <button type="submit" class="btn">Add Volunteer</button>
+      <a href="{{ url_for('ngo_dashboard') }}" class="btn ghost">Cancel</a>
+    </form>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+  <title>AniCare</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+</head>
+
+<body>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="navbar">
+      <div class="logo">
+        <img src="{{ url_for('static', filename='images/anicare_logo.png') }}" alt="AniCare Logo">
+      </div>
+
+      <div class="nav-links">
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('about') }}">About</a>
+        <a href="{{ url_for('contact') }}">Contact</a>
+        <a href="{{ url_for('feedback') }}">Feedback</a>
+
+        {% if session.get('user_id') %}
+          <a href="#" class="logout-btn">Logout</a>
+        {% else %}
+          <a href="{{ url_for('login') }}">Sign In</a>
+          <a href="{{ url_for('register') }}">Register</a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-text text-centered">
+        <div class="brand-header"><br><br>
+          <h2 class="brand-name-top">ANICARE</h2>
+        </div>
+
+        <h1 class="tagline fade-in">Your Partner in Animal Wellness & Rescue</h1>
+        <p class="hero-highlight fade-in">
+          Pet Lover? Vet? NGO? AniCare connects you all.
+        </p>
+
+        {% if session.get('user_id') %}
+          <a href="{{ url_for('role_select') }}">
+            <button class="start-btn">Select Your Role to Proceed</button>
+          </a>
+        {% else %}
+          <a href="{{ url_for('login') }}">
+            <button class="start-btn">Login to Continue</button>
+          </a>
+        {% endif %}
+      </div>
+
+      <img src="{{ url_for('static', filename='images/hero.jpg') }}" alt="Hero Dog" class="hero-img" />
+    </div>
+  </section>
+
+  <!-- Welcome Section -->
+  <section class="welcome">
+    <h2>Welcome to AniCare</h2>
+    <p class="hero-highlight">Join us in creating a better world for every paw 🐾</p>
+    <div class="animal-row">
+      <img src="{{ url_for('static', filename='images/cat_dog.jpg') }}" alt="cat and dog" class="fade-on-scroll" />
+    </div>
+  </section>
+
+  <!-- Caring Section -->
+  <section class="caring">
+    <div class="text-content">
+      <h3>Caring for Pets, One Paw at a Time</h3>
+      <p>
+        At AniCare, we are dedicated to making tails wag and hearts purr. Our mission is to provide compassionate and reliable care <br>
+        for every furry family member, ensuring their health, happiness, and well-being. 
+        We are grateful for the trust you place in us, because <br>your pets are not just pets, they are family.
+      </p>
+    </div>
+    <img src="{{ url_for('static', filename='images/two_dogs.png') }}" alt="Caring pets" class="caring-img" />
+  </section>
+
+  <!-- Testimonials -->
+  <section class="testimonials">
+    <h4>The Heart Behind AniCare 🐾</h4>
+    <div class="testimonial solo">
+      <img src="{{ url_for('static', filename='images/riya_img.jpg') }}" alt="Riya" class="creator_photo" />
+      <br>
+      <p class="name">Riya Jagtap</p><br>
+      <p class="quote">
+        “I built AniCare with the dream of bridging the gap <br>between people and the voiceless.<br> 
+        Whether it’s a lost pet or an injured stray, <br>I want every paw to be cared for.”
+      </p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p><strong>Get in touch, we're all ears!</p></strong>
+    <div class="footer-contact">
+      
+      <span>📩  anicare.contactus@gmail.com</span>   |  
+      <span>📞 +91 8433901697</span><br>
+    </div>
+    <div class="footer-links">
+      <a href="{{ url_for('feedback') }}">Feedback</a><br><br>
+      <span>&copy; 2025 AniCare. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <!-- Logout Modal -->
+  <div id="logoutModal" class="modal">
+    <div class="modal-content">
+      <p>Are you sure you want to logout?</p>
+      <div class="modal-buttons">
+        <button class="modal-btn logout-confirm-btn" onclick="confirmLogout()">Yes, Logout</button>
+        <button class="modal-btn cancel-btn" onclick="closeModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script>
+    // Fade-on-scroll
+    document.addEventListener('DOMContentLoaded', function () {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) entry.target.classList.add('visible');
+          else entry.target.classList.remove('visible');
+        });
+      }, { threshold: 0.3, rootMargin: "0px 0px -100px 0px" });
+
+      document.querySelectorAll('.fade-on-scroll').forEach(el => observer.observe(el));
+
+      // Logout modal
+      const logoutBtn = document.querySelector('.logout-btn');
+      const cancelBtn = document.querySelector('.cancel-btn');
+      if (logoutBtn) logoutBtn.addEventListener('click', function(e){
+        e.preventDefault();
+        document.getElementById('logoutModal').style.display = 'block';
+      });
+      if (cancelBtn) cancelBtn.addEventListener('click', function(){
+        document.getElementById('logoutModal').style.display = 'none';
+      });
+    });
+
+    function closeModal() {
+      document.getElementById('logoutModal').style.display = 'none';
+    }
+    function confirmLogout() {
+      window.location.href = "{{ url_for('logout') }}";
+    }
+  </script>
+</body>
+</html>

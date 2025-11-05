@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel = "icon" type="images/png" href="static/images/favicon.png">
+  <title>About Us | AniCare</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <img src="/static/images/anicare_logo.png" alt="AniCare Logo">
+    </div>
+    <nav aria-label="Main Navigation">
+      <a href="{{ url_for('home') }}">Home</a>
+      <a href="{{ url_for('about') }}">About</a>
+      <a href="{{ url_for('feedback') }}">Feedback</a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>About AniCare</h1>
+      <p>Your Companion in Pet & Stray Animal Wellness</p>
+    </div>
+  </section>
+
+  <!-- About Content Sections -->
+  
+
+  <main class="about-sections">
+
+    <section class="section">
+      <h2>Our Mission</h2>
+      <p>
+        AniCare is dedicated to improving the lives of pets and stray animals by creating a single, easy-to-use platform that connects veterinarians, NGOs, and pet owners. The mission is to ensure that every animal receives organized, reliable, and accessible care. The platform helps track health records, coordinate care, and support rescue operations so that animals in need can receive timely attention and appropriate care.
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>Our Story</h2>
+      <p>
+        AniCare was born from a deep love for animals and a strong desire to address real challenges in pet and stray care. Observing fragmented health records, disconnected rescue efforts, and limited coordination among veterinarians, pet owners, and NGOs, it became clear that a unified solution was needed. The vision was simple but meaningful: create a platform that streamlines pet care, supports stray animal rescue, and encourages collaboration across the animal welfare community, making it easier for everyone to contribute in a positive way.
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>What We Offer</h2>
+      <p>
+        AniCare brings together all aspects of animal care in one place. Pet owners can register their pets, schedule appointments, and maintain complete records of their pets' health and care routines, ensuring that nothing is overlooked. Veterinarians can provide consultation notes, prescribe treatments, and keep a comprehensive record for each animal, helping track their progress over time. Stray or injured animals can be reported with photos and location details, allowing NGOs to monitor, manage, and coordinate rescue efforts efficiently. Each user has access to a dashboard specifically designed for their role, making navigation simple and ensuring that every action is secure, organized, and impactful.
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>Community Vision</h2>
+      <p>
+        At AniCare, we believe that real change begins with a united community. Every action, whether reporting a stray, caring for a pet, or supporting rescue efforts, makes a difference in the lives of animals. By bringing together pet owners, veterinarians, NGOs, and animal lovers, the platform fosters collaboration, shared responsibility, and a sense of purpose. AniCare envisions a world where every animal is valued, every rescue is handled efficiently, and every caregiver can make a meaningful contribution. Small actions, when combined, create a safer and kinder environment for all animals.
+      </p>
+    </section>
+
+    <section class="section">
+        <h2>Solo and Strong</h2>
+        <p>
+          AniCare is a solo project, developed from start to finish by Riya Jagtap. Every stage, from understanding the needs of pets and rescuers, planning the workflow, designing the system, building and testing it, to finally launching it, reflects focus, persistence, and passion. This project demonstrates that with commitment and vision, a single person can create a platform that makes a tangible difference in animal welfare, connecting communities, improving care, and supporting rescue efforts.
+        </p>
+      </section>
+
+      <section class="section">
+        <h2>FAQs</h2>
+        <p>
+          <strong>What is AniCare?</strong><br>
+          AniCare is a platform that connects pet owners, veterinarians, and NGOs to improve the welfare of pets and stray animals.
+        </p>
+        <p>
+          <strong>Can I use AniCare without owning a pet?</strong><br>
+          Yes! While the platform is primarily designed for pet owners, it can be extended in the future to allow volunteers to contribute by reporting and tracking stray animals.
+        </p>
+        <p>
+          <strong>How do I report a stray or injured animal?</strong><br>
+          Reporting a stray or injured animal is simple. You can submit a report with a photo, description, and location, and the appropriate organizations are notified automatically to respond quickly.
+        </p>
+        <p>
+          <strong>What kind of pet data can I store?</strong><br>
+          Users can maintain detailed records for their pets, including vaccination and medical history, care routines, and activity logs.
+        </p>
+        <p>
+          <strong>Is my data secure?</strong><br>
+          All data is kept secure and accessible only to authorized users.
+        </p>
+        <p>
+          <strong>Is there a mobile app?</strong><br>
+          AniCare is currently web-based, but it has been designed to evolve into a mobile-friendly platform in the future.
+        </p>
+      </section>
+
+  </main>
+
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 AniCare. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

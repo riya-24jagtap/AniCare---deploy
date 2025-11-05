@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Book Appointment | AniCare</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/book_appointment.css') }}">
+</head>
+<body style="background: url('{{ url_for('static', filename='images/consultation_history_bg.jpg') }}') no-repeat center center fixed; background-size: cover;">
+
+<header class="navbar">
+  <div class="navbar-left">
+    <img src="{{ url_for('static', filename='images/anicare_logo.png') }}" alt="AniCare Logo" class="logo-img">
+  </div>
+  <nav>
+    <a href="{{ url_for('home') }}">Home</a>
+    <a href="{{ url_for('about') }}">About</a>
+    <a href="{{ url_for('contact') }}">Contact</a>
+  </nav>
+</header>
+
+<h2 class="page-title">📅 Book an Appointment</h2>
+
+<div class="back-btn-container">
+  <a href="{{ url_for('user_dashboard') }}" class="btn-back">← Back to Dashboard</a>
+</div>
+
+<div class="form-container">
+  <form id="appointmentForm" method="POST">
+    <!-- ✅ Added missing selects -->
+    <label for="pet_id">Select Pet:</label>
+    <select id="pet_id" name="pet_id" required>
+      <option value="">-- Select Pet --</option>
+      {% for pet in pets %}
+      <option value="{{ pet.id }}">{{ pet.name }}</option>
+      {% endfor %}
+    </select>
+
+    <label for="vet">Select Vet:</label>
+    <select id="vet" name="vet" required disabled>
+      <option value="">-- Select Vet --</option>
+      {% for vet in vets %}
+      <option value="{{ vet.id }}">{{ vet.name }}</option>
+      {% endfor %}
+    </select>
+
+    <label for="date">Select Date:</label>
+    <input type="date" id="date" name="date" min="{{ current_date }}" required disabled>
+
+    <label for="reason">Reason for Visit:</label>
+    <textarea id="reason" name="reason" rows="3" placeholder="Describe your pet's issue..." required></textarea>
+
+    <!-- ✅ Time slots -->
+    <div id="slotsContainer" class="slots-container"></div>
+
+    <input type="hidden" id="appointment_time" name="appointment_time" required>
+    <button type="submit" id="submitBtn" disabled>Book Appointment</button>
+  </form>
+
+  <h3>Your Appointments</h3>
+  <table id="appointmentsTable" border="1" cellspacing="0" cellpadding="5">
+    <thead>
+      <tr>
+        <th>Pet</th>
+        <th>Vet</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Reason</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for appt in appointments %}
+      <tr>
+        <td>{{ appt.pet_name }}</td>
+        <td>{{ appt.vet_name }}</td>
+        <td>{{ appt.date }}</td>
+        <td>{{ appt.slot }}</td>
+        <td>{{ appt.reason }}</td>
+        <td>{{ appt.status }}</td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="6" style="text-align:center;">No appointments found.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- ✅ Single clean modal -->
+<div id="confirmationModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-content">
+    <h3 id="modalTitle">Confirm Your Appointment</h3>
+    <p id="modalDetails"></p>
+    <div class="modal-actions">
+      <button id="confirmYes" class="btn-confirm">Confirm</button>
+      <button id="confirmNo" class="btn-cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('appointmentForm');
+  const petSelect = document.getElementById('pet_id');
+  const vetSelect = document.getElementById('vet');
+  const dateInput = document.getElementById('date');
+  const reasonInput = document.getElementById('reason');
+  const timeInput = document.getElementById('appointment_time');
+  const submitBtn = document.getElementById('submitBtn');
+  const slotsContainer = document.getElementById('slotsContainer');
+
+  vetSelect.disabled = true;
+  dateInput.disabled = true;
+
+  let fixedSlots = [];
+
+  function checkForm() {
+    submitBtn.disabled = !(petSelect.value && vetSelect.value && dateInput.value && reasonInput.value && timeInput.value);
+  }
+
+  async function fetchFixedSlots() {
+    try {
+      const res = await fetch('/get_fixed_slots');
+      if (!res.ok) throw new Error('Failed to load fixed slots.');
+      const data = await res.json();
+      fixedSlots = data.slots || [];
+      await renderSlots();
+    } catch (err) {
+      console.error('Error fetching fixed slots:', err);
+      alert('Error fetching available time slots. Please try again later.');
+    }
+  }
+
+  async function renderSlots() {
+    slotsContainer.innerHTML = '';
+
+    const vetId = vetSelect.value;
+    const date = dateInput.value;
+
+    if (!vetId || !date) {
+      const placeholderBtn = document.createElement('button');
+      placeholderBtn.type = 'button';
+      placeholderBtn.className = 'time-slot-btn placeholder';
+      placeholderBtn.textContent = 'Select pet, vet & date';
+      slotsContainer.appendChild(placeholderBtn);
+      return;
+    }
+
+    let bookedSlots = [];
+    try {
+      const res = await fetch(`/get_available_slots?vet_id=${vetId}&date=${date}`);
+      if (!res.ok) throw new Error('Failed to fetch available slots.');
+      const data = await res.json();
+      bookedSlots = data.booked || [];
+    } catch (err) {
+      console.error('Error fetching slots:', err);
+      alert('Error fetching available slots. Please try again later.');
+      return;
+    }
+
+    const today = new Date();
+    const selectedDate = new Date(date);
+
+    fixedSlots.forEach(slot => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'time-slot-btn';
+      btn.textContent = slot;
+
+      let disableSlot = false;
+      let tooltip = '';
+
+      if (bookedSlots.includes(slot)) {
+        disableSlot = true;
+        tooltip = 'Already booked';
+      }
+
+      if (selectedDate.toDateString() === today.toDateString() && slot.includes(':')) {
+        const [hour, minute] = slot.split(':').map(Number);
+        const slotDateTime = new Date(selectedDate);
+        slotDateTime.setHours(hour, minute, 0, 0);
+        if (slotDateTime <= today) {
+          disableSlot = true;
+          tooltip = 'Past time';
+        }
+      }
+
+      if (disableSlot) {
+        btn.classList.add('disabled');
+        btn.disabled = true;
+        btn.title = tooltip;
+      } else {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.time-slot-btn').forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+          timeInput.value = slot;
+          checkForm();
+        });
+      }
+
+      slotsContainer.appendChild(btn);
+    });
+  }
+
+  async function refreshAppointments() {
+    try {
+      const res = await fetch('/user_appointments');
+      const data = await res.json();
+      const tbody = document.querySelector('#appointmentsTable tbody');
+      tbody.innerHTML = '';
+
+      if (!data.appointments || !data.appointments.length) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;">No appointments found.</td></tr>`;
+        return;
+      }
+
+      data.appointments.forEach(appt => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${appt.pet_name}</td>
+          <td>${appt.vet_name}</td>
+          <td>${appt.date}</td>
+          <td>${appt.slot}</td>
+          <td>${appt.reason}</td>
+          <td>${appt.status}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    } catch (err) {
+      console.error('Error refreshing appointments:', err);
+    }
+  }
+
+  petSelect.addEventListener('change', async () => {
+    vetSelect.disabled = !petSelect.value;
+    dateInput.disabled = !petSelect.value;
+    timeInput.value = '';
+    await renderSlots();
+    await refreshAppointments();
+    checkForm();
+  });
+
+  vetSelect.addEventListener('change', () => { timeInput.value = ''; renderSlots(); checkForm(); });
+  dateInput.addEventListener('change', () => { timeInput.value = ''; renderSlots(); checkForm(); });
+  reasonInput.addEventListener('input', checkForm);
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const petText = petSelect.options[petSelect.selectedIndex].text;
+    const vetText = vetSelect.options[vetSelect.selectedIndex].text;
+    const dateText = dateInput.value;
+    const timeText = timeInput.value;
+    const reasonText = reasonInput.value.trim();
+
+    if (!petText || !vetText || !dateText || !timeText) {
+      alert('Please fill all details before booking.');
+      return;
+    }
+
+    const modal = document.getElementById('confirmationModal');
+    const modalDetails = document.getElementById('modalDetails');
+    const confirmYes = document.getElementById('confirmYes');
+    const confirmNo = document.getElementById('confirmNo');
+
+    modalDetails.innerHTML = `
+      <strong>Pet:</strong> ${petText}<br>
+      <strong>Vet:</strong> ${vetText}<br>
+      <strong>Date:</strong> ${dateText}<br>
+      <strong>Time:</strong> ${timeText}<br>
+      <strong>Reason:</strong> ${reasonText}
+    `;
+
+    modal.style.display = 'flex';
+    document.body.classList.add('modal-open');
+
+    confirmYes.onclick = async () => {
+      confirmYes.disabled = true;
+      try {
+        const res = await fetch('/book_appointment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            pet_id: petSelect.value,
+            vet_id: vetSelect.value,
+            date: dateInput.value,
+            slot: timeInput.value,
+            reason: reasonText
+          })
+        });
+
+        const data = await res.json();
+        if (!res.ok || !data.success) throw new Error(data.error || 'Failed to book appointment');
+
+        alert('Appointment booked successfully!');
+        form.reset();
+        vetSelect.disabled = true;
+        dateInput.disabled = true;
+        timeInput.value = '';
+        modal.style.display = 'none';
+        document.body.classList.remove('modal-open');
+
+        await renderSlots();
+        await refreshAppointments();
+        checkForm();
+      } catch (err) {
+        alert('Error: ' + err.message);
+      } finally {
+        confirmYes.disabled = false;
+      }
+    };
+
+    confirmNo.onclick = () => {
+      modal.style.display = 'none';
+      document.body.classList.remove('modal-open');
+    };
+  });
+
+  setInterval(() => {
+    if (vetSelect.value && dateInput.value) renderSlots();
+  }, 30000);
+
+  fetchFixedSlots();
+  refreshAppointments();
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ANICARE — Vet Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/vet_dashboard.css') }}">
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <img src="{{ url_for('static', filename='images/anicare_logo.png') }}" alt="AniCare Logo">
+  </div>
+  <nav>
+    <a href="{{ url_for('home') }}">Home</a>
+    <a href="{{ url_for('about') }}">About</a>
+    <a href="{{ url_for('contact') }}">Contact</a>
+  </nav>
+</header>
+
+
+
+  <main class="main">
+    <div class="vet-info-card">
+      <div style="font-weight:800; font-size: 1.1em;">Dr. {{ vet.name or "Tejal Wagh" }}</div>
+      <div class="tiny muted">{{ vet.specialization or "Cardiology" }}</div>
+    </div>
+
+  <!--  <div class="main-content-header">
+      <div class="search-box-container">
+        <input id="globalSearch" placeholder="Search..." />
+      </div>-->
+      
+      <nav class="nav" id="nav">
+        <button data-section="dashboard">Dashboard</button>
+        <button data-section="profile">Profile</button>
+        <button data-section="appointments" class="active">Appointments</button> 
+        <button data-section="consultations">Consultations</button>
+      </nav>
+    </div>
+
+    <!-- Profile Section -->
+    <div id="profile" class="card section">
+      <h3>Edit Profile</h3>
+      <form action="{{ url_for('update_vet_profile') }}" method="POST">
+        <label>Full Name</label>
+        <input type="text" name="full_name" value="{{ vet.name }}" required>
+        <label>Email</label>
+        <input type="email" name="email" value="{{ vet.email }}" required>
+        <label>Phone</label>
+        <input type="text" name="phone" value="{{ vet.phone }}">
+        <label>Specialization</label>
+        <input type="text" name="specialization" value="{{ vet.specialization }}">
+        <label>Clinic Address</label>
+        <input type="text" name="clinic_address" value="{{ vet.clinic_address }}">
+        <label>Bio</label>
+        <textarea name="bio">{{ vet.bio }}</textarea>
+        <button class="btn" type="submit">Update Profile</button>
+      </form>
+    </div>
+
+
+    <!-- Dashboard Section -->
+    <div id="dashboard" class="card section active">
+      <div class="cards">
+        <div class="card">
+          <h3>Appointments</h3>
+          <div class="big" id="countToday">0</div>
+        </div>
+        <div class="card">
+          <h3>Open Cases</h3>
+          <div class="big" id="countOpen">0</div>
+        </div>
+        <div class="card">
+          <h3>Consultations</h3>
+          <div class="big" id="countCons">0</div>
+        </div>
+        <div class="card">
+          <h3>Profile</h3>
+          <div class="big" id="countProfile">—</div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Appointments Section -->
+    <div id="appointments" class="card section">
+      <h3>Appointments</h3><br>
+
+      <!-- Add this search input here -->
+      <input type="text" id="apptSearchInput" placeholder="Search appointments..." style="margin-bottom:10px; width:100%; padding:5px;">
+      <table id="apptTable">
+        <thead>
+          <tr>
+            <th>Pet</th>
+            <th>Type</th>
+            <th>Date</th>
+            <th>Slot</th>
+            <th>Status</th>
+            <th>Source</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="6">Loading...</td></tr>
+        </tbody>
+      </table>
+      <button class="btn" id="addApptQuick">+ Quick Add Appointment</button>
+    </div>
+
+    <!-- Consultations Section -->
+    <div id="consultations" class="card section">
+      <h4>Add Consultation</h4>
+
+      <!-- Add Consultation Form -->
+      <form id="manualConsultForm">
+
+        <!-- Owner Selection -->
+        <label for="manualConsultOwner">Owner</label>
+        <select id="manualConsultOwner" required>
+          <option value="">-- Select Owner --</option>
+          <!-- JS will populate owners -->
+        </select>
+
+        <!-- Pet Selection -->
+        <label for="manualConsultPet">Pet</label>
+        <select id="manualConsultPet" required>
+          <option value="">-- Select Pet --</option>
+        </select>
+
+        <!-- New Pet Fields -->
+        <div id="newPetFields" style="display:none; margin-top:10px;">
+          <label for="newPetName">Pet Name</label>
+          <input type="text" id="newPetName" placeholder="Enter pet name">
+          <label for="newPetType">Pet Type</label>
+          <input type="text" id="newPetType" placeholder="Enter pet type">
+        </div>
+
+        <!-- Existing Pet Type -->
+        <div id="existingPetTypeField">
+          <label for="manualConsultType">Pet Type</label>
+          <input type="text" id="manualConsultType" placeholder="Pet type" readonly>
+        </div>
+
+        <!-- Notes and Status -->
+        <div class="form-group">
+          <label for="manualConsultNotes">Notes</label>
+          <textarea id="manualConsultNotes" placeholder="Enter notes" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="manualConsultStatus">Status</label>
+          <select id="manualConsultStatus" required>
+            <option value="pending" selected>Pending</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn">Save Consultation</button>
+      </form>
+
+      <!-- Consultations Table -->
+      <h4 style="margin-top:20px;">Consultations List</h4>
+      <table id="consTable" style="width:100%; border-collapse:collapse; margin-top:10px;">
+        <thead>
+          <tr>
+            <th>Pet Name</th>
+            <th>Pet Type</th>
+            <th>Owner Name</th>
+            <th>Notes</th>
+            <th>Status</th>
+            <th>Created At</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td colspan="6">Loading consultations...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+
+    <!--
+    <div id="stray" class="card section">
+      <h3>Stray Cases</h3>
+      <input id="searchInput" placeholder="Search by animal type..." style="margin-bottom:10px; padding:5px; width:100%;" />
+      <table style="width:100%; border-collapse:collapse; background:#fff;">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Animal</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Action Note</th>
+            <th>Take Action</th>
+          </tr>
+        </thead>
+        <tbody id="strayCasesTable"></tbody>
+      </table>
+    </div>-->
+
+
+
+<!-- Single Add Appointment Modal -->
+<div id="addApptModal" class="modal-backdrop" style="display:none;">
+  <div class="modal">
+    <h3>New Appointment</h3>
+    <form id="addApptForm">
+      <label>Pet Name</label>
+      <input type="text" id="modal_pet" name="pet_name" required>
+      <label>Pet Type</label>
+      <input type="text" id="modal_type" name="pet_type" required>
+      <label>Date</label>
+      <input type="date" id="modal_date" name="appointment_date" required>
+      <label>Slot</label>
+      <select id="modal_slot" name="slot" required></select>
+      <label>Reason</label>
+      <textarea id="modal_reason" name="reason" required></textarea>
+      <div style="margin-top:10px;">
+        <button type="submit" class="btn">Save</button>
+        <button type="button" class="btn ghost" id="modalCancel">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Generic modal -->
+<div id="modalRoot" class="modal-backdrop" style="display:none;">
+  <div class="modal">
+    <h3 id="modalTitle"></h3>
+    <div id="modalBody"></div>
+    <div style="text-align:right;margin-top:10px;">
+      <button onclick="closeModal()" class="btn">Close</button>
+    </div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/vet_dashboard.js') }}"></script>
+</body>
+</html>

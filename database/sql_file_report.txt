@@ -1,0 +1,32 @@
+SQL File Data Report 
+=============================== 
+1-10-25.sql - HAS DATA 
+anicare_db.sql - HAS DATA 
+anicare_db_-9--02.sql - HAS DATA 
+anicare_db_01-11-2025.sql - HAS DATA 
+anicare_db_13-10-2025.sql - HAS DATA 
+anicare_db_17-10-2025.sql - HAS DATA 
+anicare_db_19-09-2025.sql - HAS DATA 
+anicare_db_20-09-2025.sql - HAS DATA 
+anicare_db_29-10-2025.sql - HAS DATA 
+anicare_db_30-10-2025.sql - HAS DATA 
+anicare_db_31-10-2025.sql - HAS DATA 
+anicare_db_appointments.sql - HAS DATA 
+anicare_db_backup.sql - HAS DATA 
+anicare_db_cases.sql - HAS DATA 
+anicare_db_consultation_history.sql - HAS DATA 
+anicare_db_contact_messages.sql - HAS DATA 
+anicare_db_diagnosis_history.sql - HAS DATA 
+anicare_db_donations.sql - HAS DATA 
+anicare_db_donors.sql - HAS DATA 
+anicare_db_feedback.sql - HAS DATA 
+anicare_db_ngo.sql - HAS DATA 
+anicare_db_pet_records.sql - HAS DATA 
+anicare_db_stray_reports.sql - HAS DATA 
+anicare_db_users.sql - HAS DATA 
+anicare_db_vets.sql - HAS DATA 
+anicare_db_vet_appointments.sql - HAS DATA 
+anicare_db_volunteers.sql - HAS DATA 
+MYSQL.sql - HAS DATA 
+[Importing] %~nxF 
+[Skipped] %~nxF (no data found) 

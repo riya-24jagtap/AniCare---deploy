@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Book Appointment</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #ffefdb;
+      color: #333;
+      padding: 20px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #e07a5f;
+    }
+
+    form {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 25px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="datetime-local"],
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      background-color: #81b29a;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #679e88;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Book Appointment</h2>
+  <form action="/save_appointment" method="POST">
+    <label for="pet_id">Pet ID:</label>
+    <input type="number" name="pet_id" id="pet_id" required>
+
+    <label for="vet_id">Vet ID:</label>
+    <input type="number" name="vet_id" id="vet_id" required>
+
+    <label for="appointment_time">Appointment Time:</label>
+    <input type="datetime-local" name="appointment_time" id="appointment_time" required>
+
+    <label for="reason">Reason:</label>
+    <textarea name="reason" id="reason" rows="4" required></textarea>
+
+    <button type="submit">Save Appointment</button>
+  </form>
+
+</body>
+</html>

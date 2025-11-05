@@ -1,0 +1,354 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  position: relative;
+  background: url('/static/images/bg2.jpg') no-repeat center center;
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+}
+
+header {
+  background-color: #d1a87a;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header img {
+  height: 40px;
+}
+
+.logo {
+  width: 70px;
+  height: 70px;
+  margin-right: 4px; 
+  margin-left: -1px;
+}
+
+.logo img {
+  width: 75px;
+  height: 75px;
+}
+
+nav a {
+  position: relative;
+  text-decoration: none;
+  color: #4a2e1c;
+  margin-left: 20px;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 5px 0;
+}
+
+nav a::after {
+  content: '';
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background-color: #3b2515;
+  left: 0;
+  bottom: -5px;
+  transition: width 0.3s ease;
+}
+
+nav a:hover::after,
+nav a.active::after {
+  width: 100%;
+}
+
+html, body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+body > .main-container {
+  flex: 1;
+}
+
+.main-container {
+  display: flex;
+  height: 600px;
+}
+
+.pic {
+  width: 150px;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 20px;
+}
+
+/* Password wrapper & toggle */
+.password-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding: 12px 45px 12px 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+  background-color: #7b4526;
+  color: #fff;
+}
+
+.password-wrapper input::placeholder {
+  color: #f9d7b3;
+}
+
+.password-wrapper .toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  -ms-user-select: none;      
+  -moz-user-select: none;     
+  -webkit-user-select: none;  
+  user-select: none;          
+}
+
+/* Role select dropdown */
+.role-select-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.role-dropdown {
+  padding: 10px 35px 10px 20px; /* top | right | bottom | left */
+  border: none;
+  border-radius: 8px;
+  background-color: #6b3b1e;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  /* background-image: url('/static/images/down-arrow.png');  */
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 12px;
+}
+
+.role-dropdown option {
+  background-color: #ffe7ca; /* dropdown options background */
+  color: #6b3b1e; /* dropdown options text color */
+}
+/* ===== LOGIN BUTTON WITH GLEAM ===== */
+.login-btn {
+  position: relative;
+  overflow: hidden;
+  padding: 12px 30px;
+  background-color: #4a2e1c; /* base brown */
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+/* Gleam effect for login button */
+.login-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -75%;           /* start off left */
+  width: 50%;           /* narrow diagonal bar */
+  height: 100%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: skewX(-25deg);
+  transition: all 0.7s ease;
+}
+
+.login-btn:hover::before {
+  left: 125%;           /* slide across on hover */
+}
+
+.login-btn:hover {
+  background-color: #8b4a27;
+}
+
+/* ===== REGISTER BUTTON SIMPLE HOVER ===== */
+.register-btn {
+  padding: 12px 30px;
+  background-color: #c89e74; /* base color */
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.register-btn:hover {
+  background-color: #c89e74; /* stays the same */
+  box-shadow: 0 0 10px rgba(255,255,255,0.5); /* subtle glow */
+}
+
+
+
+
+/* Layout left & right */
+.left, .right {
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px 30px;
+  background: none;
+}
+
+.left {
+  flex: 0.8; 
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.left h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #512a10;
+}
+
+.right {
+  flex: 0.8;
+  padding: 60px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-color: #6b3b1e;
+  color: white;
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 50px;
+}
+
+.right h2 {
+  font-size: 28px;
+  margin-bottom: 15px;
+}
+
+.right p {
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 20px;
+  padding: 0 30px;
+  text-align: center;
+}
+
+.right button {
+  background-color: #ffe7ca;
+  color: #6b3b1e;
+}
+
+/* Forms */
+form {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+}
+
+input {
+  margin-bottom: 15px;
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  background-color: #7b4526;
+  color: #fff;
+}
+
+input::placeholder {
+  color: #f9d7b3;
+}
+
+button {
+  padding: 10px;
+  background-color: #47230f;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Flash messages */
+.flash-container {
+  margin: 10px 0;
+}
+
+.flash-message {
+  background-color: #e6f4ea;
+  color: #2f6627;
+  padding: 10px;
+  border: 1px solid #a2d5ac;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.flash-message.error {
+  background-color: #fcebea;
+  color: #a94442;
+  border: 1px solid #f5c6cb;
+}
+
+/* Footer */
+footer {
+  background: #fcefdc;
+  padding: 10px 15px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 0;
+}
+
+footer h3 {
+  margin: 5px 0 8px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.footer-contact {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px 20px;
+  margin-top: 5px;
+  font-weight: normal;
+  font-size: 13px;
+}
+
+.footer-contact div {
+  margin: 4px 15px;
+}
+
+.footer-contact p {
+  margin: 2px 0;
+}
+
+.footer-links a {
+  display: block;
+  text-decoration: none;
+  color: #6e3f20;
+  margin: 2px 0;
+  font-size: 13px;
+}

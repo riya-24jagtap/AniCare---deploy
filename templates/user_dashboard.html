@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+  <title>ANICARE - User Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/user_dashboard.css') }}">
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <img src="{{ url_for('static', filename='images/anicare_logo.png') }}" alt="AniCare Logo">
+    </div>
+    <nav>
+      <a href="{{ url_for('home') }}">Home</a>
+      <a href="{{ url_for('about') }}">About</a>
+      <a href="{{ url_for('contact') }}">Contact</a>
+    </nav>
+  </header>
+
+  <div class="profile-box">
+    <p>Welcome back, <strong>{{ user_name }}</strong> ({{ user_role | capitalize }})</p>
+
+  </div>
+
+  <!-- Dashboard Content -->
+  <div class="content">
+    <div class="dashboard-container">
+      <div id="main-dashboard-grid">
+
+        <!-- Left Panel -->
+        <div class="action-card-left">
+          <p class="card-welcome">👋 Welcome back,</p>
+          <h1 class="card-title">User Dashboard</h1>
+
+          <div class="action-buttons-group">
+            <button class="action-btn btn-1" onclick="window.location.href='{{ url_for('pet_register') }}'">
+              🐾 Register Your Pet
+            </button>
+
+            <button class="action-btn btn-3" onclick="window.location.href='{{ url_for('report_stray') }}'">
+              🚨 Report Stray Animal
+            </button>
+
+            <button class="action-btn btn-4" onclick="window.location.href='{{ url_for('book_appointment') }}'">
+              📅 Book Appointment
+            </button>
+
+            <button class="action-btn btn-5" onclick="window.location.href='{{ url_for('consultation_history') }}'">
+              📋 Consultation History
+            </button>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

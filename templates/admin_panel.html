@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+  <style>
+      body { 
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+          margin: 20px; 
+          background-color: #F7EFE4;
+          color: #2E2E2E;
+      }
+      h1 { text-align: center; margin-bottom: 40px; color: #4B3621; }
+      h2 { margin-top: 40px; margin-bottom: 15px; color: #D88259; }
+      table { width: 100%; border-collapse: collapse; margin-bottom: 40px; background-color: #fff; border-radius: 10px; box-shadow: 0 3px 8px rgba(0,0,0,0.07); overflow: hidden; }
+      th, td { padding: 12px 15px; text-align: left; }
+      th { background-color: #f1d9ba; color: #4B3621; font-weight: 600; }
+      tr:nth-child(even) { background-color: #fef5ef; }
+      tr:hover { background-color: #fce5d0; }
+      td { color: #2E2E2E; }
+  </style>
+</head>
+<body>
+
+<h1>Admin Dashboard</h1>
+
+<!-- Contact Messages Section -->
+<h2>Contact Messages</h2>
+<table>
+  <tr>
+    <th>ID</th><th>Role</th><th>Full Name</th><th>Email</th><th>Subject</th><th>Message</th><th>Created At</th>
+  </tr>
+  {% for msg in contact_messages %}
+  <tr>
+    <td>{{ msg.id }}</td>
+    <td>{{ msg.role }}</td>
+    <td>{{ msg.full_name }}</td>
+    <td>{{ msg.email }}</td>
+    <td>{{ msg.subject }}</td>
+    <td>{{ msg.message }}</td>
+    <td>{{ msg.created_at }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<!-- Feedback Section -->
+<h2>All Feedback</h2>
+<table>
+  <tr>
+    <th>ID</th><th>User</th><th>Message</th><th>Submitted At</th>
+  </tr>
+  {% for fb in feedbacks %}
+  <tr>
+    <td>{{ fb.id }}</td>
+    <td>{{ fb.user_id or 'Guest' }}</td>
+    <td>{{ fb.message }}</td>
+    <td>{{ fb.submitted_at.strftime('%Y-%m-%d %H:%M') }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+</body>
+</html>

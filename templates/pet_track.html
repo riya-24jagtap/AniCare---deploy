@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="static/images/favicon.png">
+  <title>ANICARE - Track </title>
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/pet_track.css') }}">
+</head>
+<body>
+
+  <!-- Header -->
+<header class="navbar">
+  <div class="navbar-left">
+    <img src="{{ url_for('static', filename='images/anicare_logo.png') }}" alt="AniCare Logo" class="logo-img">
+  </div>
+  <nav>
+    <a href="{{ url_for('home') }}">Home</a>
+    <a href="{{ url_for('about') }}">About</a>
+    <a href="{{ url_for('contact') }}">Contact</a>
+  </nav>
+</header>
+
+<body><br>
+   <h2 style="text-align: center; margin-bottom: 20px; color: #91614bff">Animal Tracker</h2>
+
+   <!--Redirect to user Dashboard-->
+   <div style="text-align: right; margin: 10px 20px;">
+    <a href="{{ url_for('user_dashboard') }}" class="btn-back">← Back to Dashboard</a>
+  </div>
+
+  <div class="tracker-container">
+    <!-- QUICK DETAILS -->
+    <div class="quick-details">
+      <div>🐾 Pet Name: <strong>Bruno</strong></div>
+      <div>📍 Last Seen: <strong>2025-07-12, 21:45</strong></div>
+      <div>🔋 Battery: <strong>78%</strong></div>
+      <div>📶 Distance: <strong>120m</strong></div>
+      <div>🧭 Coords: <strong>19.0760° N, 72.8777° E</strong></div>
+    </div>
+
+    <!-- MAP SECTION -->
+    <div class="map-container">
+      <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3770.540147273743!2d72.87765551535148!3d19.0760909870914!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7ce8b8ad3f57f%3A0xf87fdb62c6cce05d!2sMumbai!5e0!3m2!1sen!2sin!4v1625291918336!5m2!1sen!2sin"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+
+    <!-- BUTTONS -->
+    <div class="buttons">
+      <button onclick="alert('Emergency alert sent!')" class="alert-btn">🚨 Emergency Alert</button>
+      <button onclick="alert('Beep sent to pet collar!')">📢 Beep Collar</button>
+      <button onclick="location.reload()">🔄 Refresh Map</button>
+    </div>
+
+    <!-- MAP MODE TOGGLE -->
+  <!--<div class="map-mode-toggle">
+      Map View:
+      <select>
+        <option>Normal</option>
+        <option>Satellite</option>
+        <option>Terrain</option>
+      </select>
+    </div> -->
+
+    <!-- CURRENT TIME DISPLAY -->
+    <div class="current-time">
+  Current UTC Time: <span id="currentTime"></span>
+</div>
+
+  </div>
+<script src="{{ url_for('static', filename='js/pet_track.js') }}"></script>
+
+</body>
+</html>

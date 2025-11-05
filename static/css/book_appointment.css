@@ -1,0 +1,329 @@
+/* ----------------- Global Body ----------------- */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  background-size: cover;
+}
+
+
+/* ----------------- Navbar ----------------- */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f1dbc0;
+  padding: 0 30px;
+  height: 70px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.navbar-left img {
+  height: 60px;
+  width: auto;
+}
+
+nav a {
+  margin-left: 20px;
+  text-decoration: none;
+  color: #4a2e1c;
+  font-weight: bold;
+  position: relative;
+  transition: color 0.3s;
+}
+
+nav a::after {
+  content: '';
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background-color: #3b2515;
+  left: 0;
+  bottom: -5px;
+  transition: width 0.3s ease;
+}
+/* 
+nav a:hover,
+nav a:focus {
+  color: #3b2515;
+} */
+
+
+
+nav a:hover::after,
+nav a.active::after {
+  width: 100%;
+}
+
+/* nav a:focus {
+  outline: 2px dashed #4a2e1c;
+  outline-offset: 4px;
+} */
+
+nav a:focus {
+  outline: none;
+}
+
+nav a:focus-visible {
+  outline: 2px dashed #4a2e1c;
+  outline-offset: 4px;
+}
+
+/* ----------------- Page Title ----------------- */
+.page-title {
+  text-align: center;
+  margin: 30px 0;
+  color: #a5673b;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* ----------------- Back Button ----------------- */
+.back-btn-container {
+  text-align: right;
+  margin: 10px 30px;
+}
+
+.btn-back {
+  background-color: #8F9779;
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-back:hover {
+  background-color: #6d765e;
+  transform: translateY(-2px);
+}
+
+/* ----------------- Form Container ----------------- */
+.form-container {
+  background: rgba(255, 255, 255, 0.6);
+  max-width: 550px;
+  margin: 40px auto 60px;
+  padding: 35px 40px;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  border: 1px solid #e0d7cf;
+  transition: transform 0.3s ease;
+}
+
+
+.form-container:hover {
+  transform: translateY(-3px);
+}
+
+/* ----------------- Form Labels & Inputs ----------------- */
+label {
+  display: block;
+  margin: 15px 0 8px;
+  font-weight: 600;
+  color: #555;
+}
+
+select,
+input[type="text"],
+input[type="date"],
+input[type="time"],
+textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+  margin-bottom: 15px;
+  background: #fdfaf8;
+  color: #333;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+select:focus,
+input:focus,
+textarea:focus {
+  border-color: #a5673b;
+  box-shadow: 0 0 6px rgba(165, 103, 59, 0.3);
+  outline: none;
+}
+
+textarea {
+  resize: none;
+}
+
+/* ----------------- Submit Button ----------------- */
+button {
+  width: 100%;
+  padding: 14px;
+  background: #a5673b;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+button:hover {
+  background: #7f4d2c;
+  transform: translateY(-2px);
+}
+
+/* ----------------- Responsive ----------------- */
+@media (max-width: 600px) {
+  .form-container {
+    margin: 20px;
+    padding: 25px 20px;
+  }
+
+  nav a {
+    margin-left: 15px;
+    font-size: 14px;
+  }
+}
+.time-slots {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.slots-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 10px;
+    min-height: 80px;
+    border: 1px solid #ccc;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    pointer-events: auto; /* ensure clicks pass */
+}
+
+
+.time-slot-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+    border: none;
+    border-radius: 8px;
+    background-color: #fff8f0; /* light cream */
+    color: #6d4c41; /* dark brown */
+    cursor: pointer;
+    font-weight: 600;
+    text-align: center;
+    transition: background 0.2s, color 0.2s;
+}
+
+.time-slot-btn:hover:not(.disabled):not(.placeholder) {
+    background-color: #f6e1cd; /* hover effect */
+}
+
+.time-slot-btn.selected {
+    background-color: #a5673b !important; /* theme brown */
+    color: #fff !important;
+}
+
+.time-slot-btn.disabled {
+    background-color: #e0d7cf;
+    color: #999;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.time-slot-btn.placeholder {
+    grid-column: 1 / -1;
+    background-color: #f0f0f0;
+    color: #888;
+    cursor: default;
+    pointer-events: none;
+    text-align: center;
+    font-weight: 600;
+}
+
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5); /* just dark overlay */
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  pointer-events: none; /* prevent overlay from catching pointer events */
+}
+
+.modal-content {
+  pointer-events: auto;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  padding: 25px 30px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+}
+
+
+body.modal-open {
+  overflow: hidden;
+}
+
+
+
+
+.modal-content h3 {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.modal-content p {
+  color: #444;
+  font-size: 15px;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn-confirm, .btn-cancel {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-confirm {
+  background-color: #2e8b57;
+  color: white;
+}
+
+.btn-confirm:hover {
+  background-color: #246e45;
+}
+
+.btn-cancel {
+  background-color: #d9534f;
+  color: white;
+}
+
+.btn-cancel:hover {
+  background-color: #b84643;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}

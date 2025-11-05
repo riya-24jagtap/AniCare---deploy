@@ -1,0 +1,157 @@
+/* Global styles */
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #f8f9fa;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #d1a87a;
+  padding: 10px 30px;
+  height: 80px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.logo-img {
+  height: 69px;
+  width: 69px;
+  object-fit: contain;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+}
+
+nav a {
+  position: relative;
+  text-decoration: none;
+  color: #3b2515;
+  margin-left: 25px;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 5px 0;
+}
+
+nav a::after {
+  content: '';
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background-color: #3b2515;
+  left: 0;
+  bottom: -5px;
+  transition: width 0.3s ease;
+}
+
+nav a:hover::after,
+nav a.active::after {
+  width: 100%;
+}
+
+/* Back button */
+.btn-back {
+  background-color: #8F9779;
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+
+.btn-back:hover {
+  background-color: #6d765e;
+}
+
+/* Container for the table */
+.history-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 30px;
+  background:  rgba(255, 255, 255, 0.6);;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Table styling */
+table {
+  width: 100%;
+  border-collapse: separate; /* needed for border-radius to work */
+  border-spacing: 0;     
+  background: rgba(255, 255, 255, 0.6);
+}
+
+th, td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+}
+
+th {
+  background-color: #2c3e50;
+  color: #fff;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+tr:nth-child(even) td {
+  background-color: #f4f6f9;
+}
+
+tr:hover td {
+  background-color: #e8f0fe;
+  transition: background 0.2s ease;
+}
+
+/* Rounded corners for table */
+table th:first-child {
+  border-top-left-radius: 12px;
+}
+
+table th:last-child {
+  border-top-right-radius: 12px;
+}
+
+table tr:last-child td:first-child {
+  border-bottom-left-radius: 12px;
+}
+
+table tr:last-child td:last-child {
+  border-bottom-right-radius: 12px;
+}
+
+/* Empty table message */
+.history-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 30px;
+  background: transparent; /* <-- this makes it solid white */
+  border-radius: 10px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  table, th, td {
+    font-size: 0.85rem;
+  }
+
+  .history-container {
+    padding: 10px;
+  }
+}

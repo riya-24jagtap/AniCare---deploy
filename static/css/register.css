@@ -1,0 +1,324 @@
+/* ========== GLOBAL STYLES ========== */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  position: relative;
+  font-family: 'Segoe UI', sans-serif;
+  color: #4a2e1c;
+  min-height: 100vh;
+  background: url('/static/images/bg2.jpg') no-repeat center center;
+  background-size: cover;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.15);
+  z-index: -1;
+}
+
+/* ========== HEADER & NAVIGATION ========== */
+header {
+  background: #d1a87a;
+  padding: 10px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  width: 70px;
+  height: 70px;
+  margin-right: 4px; 
+  margin-left: -1px;
+}
+
+.logo img {
+  width: 75px;
+  height: 75px;
+}
+
+nav {
+  display: flex;
+  gap: 20px;
+}
+
+nav a {
+  text-decoration: none;
+  color: #4a2e1c;
+  font-weight: bold;
+  font-size: 16px;
+  position: relative;
+}
+
+nav a::after {
+  content: '';
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  background-color: #3b2515;
+  left: 0;
+  bottom: -5px;
+  transition: width 0.3s ease;
+}
+
+nav a:hover::after,
+nav a.active::after {
+  width: 100%;
+}
+.container {
+  display: flex;
+  justify-content: flex-start; /* align boxes left */
+  align-items: flex-start;
+  gap: 50px;                  /* space between the two boxes */
+  padding: 40px 0;            /* only top/bottom padding */
+  width: 100%;                /* full width */
+  box-sizing: border-box;     /* include padding in width */
+  overflow: hidden;           /* prevent scroll */
+  margin: 0;                  /* no centering */
+}
+
+.welcome-box {
+  flex: 0 0 48%;
+  min-height: 400px;
+  background-color: #512a10;
+  color: white;
+  padding: 50px 40px;
+  border-top-right-radius: 60px;
+  border-bottom-right-radius: 60px;
+  margin-left: 0;             /* flush to left */
+  margin-top: 0;
+}
+
+
+.signup-box {
+  flex: 0 0 400px;    
+  background: white;
+  border-radius: 15px;
+  padding: 30px;      
+  min-height: 350px;  
+  max-height: 600px;  
+  overflow: auto;     
+}
+
+.welcome-content {
+  text-align: left;
+  margin-left: 40px;
+}
+
+.welcome-img {
+  font-size: 50px;
+  margin-bottom: 15px;
+}
+
+.login-btn {
+  margin-top: 20px;
+  padding: 10px 25px;
+  width: 180px;
+  background: #d2a679;
+  border: none;
+  border-radius: 5px;
+  color: #4a2e1c;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.login-btn:hover {
+  background-color: #c89e74;
+  box-shadow: 0 0 10px rgba(255,255,255,0.5);
+}
+
+/* ===== RIGHT REGISTER FORM ===== */
+.signup-box form {
+  padding: 0;
+}
+
+.signup-box h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #4a2e1c;
+}
+/*#4a2e1c*/
+/* Input fields */
+/* ===== Inputs, textarea, select all text black ===== */
+.signup-box input,
+.signup-box textarea,
+.signup-box .role-dropdown {
+  color: #000 !important;                  /* text color black */
+  -webkit-text-fill-color: #000 !important; /* Chrome/Safari */
+  border: 1px solid #c8a98a;
+  border-radius: 5px;
+  background-color: #fff;
+  font-size: 14px;
+  padding: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 12px;
+}
+
+/* Placeholder text black */
+.signup-box input::placeholder,
+.signup-box textarea::placeholder {
+  color: #000 !important;
+  opacity: 1; /* ensures full black */
+}
+
+/* Select placeholder black */
+.role-dropdown option:first-child {
+  color: #000 !important; /* placeholder text */
+}
+
+/* Other select options color black */
+.role-dropdown option:not(:first-child) {
+  color: #000 !important;
+}
+
+
+/* Register button with gleam effect */
+.register-btn {
+  display: block;
+  margin: 20px auto 0;
+  padding: 12px 30px;
+  width: 100%;              /* make it full width of the form */
+  max-width: 250px;         /* optional: limit maximum width */
+  background-color: #6b3b1e;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  position: relative;
+  overflow: hidden;         /* better for gleam effect */
+  transition: all 0.3s ease;
+}
+
+/* Gleam effect */
+.register-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: rgba(255,255,255,0.3);
+  transform: skewX(-25deg);
+  transition: all 0.7s ease;
+}
+
+.register-btn:hover::before {
+  left: 125%;
+}
+
+.register-btn:hover {
+  background-color: #8b4a27;
+}
+
+
+/* Password toggle */
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-wrapper input {
+  padding-right: 40px;
+}
+
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+}
+
+
+
+/* Style wrapper to force text color */
+.role-dropdown-wrapper {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+}
+
+.role-dropdown {
+  -webkit-appearance: none;  
+  -moz-appearance: none;     
+  appearance: none;           
+  color: #4a2e1c;
+  -webkit-text-fill-color: #4a2e1c;
+  background-color: #fff;
+  border: 1px solid #c8a98a;
+  border-radius: 5px;
+  padding: 12px 28px 12px 12px; /* top right bottom left */
+  font-size: 14px;
+  cursor: pointer;
+
+  background-image: url("data:image/svg+xml;charset=UTF-8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><path d='M1 1l5 5 5-5' stroke='%234a2e1c' stroke-width='2' fill='none'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 8px center; /* move arrow slightly left */
+  background-size: 12px;
+}
+
+
+/* Optional: ensure wrapper doesn’t clip arrow */
+.role-dropdown-wrapper::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+}
+
+
+
+
+/* ====== FOOTER ====== */
+footer {
+  background: #fcefdc;
+  padding: 10px 15px;        
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+footer h3 {
+  margin: 5px 0 8px;         
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.footer-contact {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  font-size: 13px;
+}
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .welcome-box,
+  .signup-box {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    border-radius: 10px;
+  }
+
+  .welcome-box {
+    border-radius: 10px;
+  }
+}

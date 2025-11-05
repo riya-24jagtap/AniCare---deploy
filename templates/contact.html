@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+<title>Contact Us | AniCare</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/contact.css') }}">
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <img src="{{ url_for('static', filename='images/anicare_logo.png') }}" alt="AniCare Logo">
+    </div>
+    <nav>
+        <a href="{{ url_for('home') }}">HOME</a>
+        <a href="{{ url_for('about') }}">ABOUT</a>
+        <a href="{{ url_for('contact') }}">CONTACT</a>
+        <a href="{{ url_for('logout') }}">LOGOUT</a>
+    </nav>
+</header>
+
+<div class="container">
+    <div class="contact-section">
+
+        <!-- Illustration -->
+        <div class="illustration-section">
+            <img src="{{ url_for('static', filename='images/contact-illustration.jpg') }}" alt="Illustration">
+        </div>
+
+        <!-- Contact Form -->
+        <div class="form-section">
+            <h1>Get in touch</h1>
+            <p>Have questions or want to collaborate? We'd love to hear from you.</p>
+
+            <form id="contactForm" novalidate>
+                <div class="form-group">
+                    <label for="full_name">Full Name</label>
+                    <input type="text" id="full_name" name="full_name" required placeholder="Enter your full name" value="{{ full_name }}" autocomplete="name">
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required placeholder="Enter your email" value="{{ email }}" autocomplete="email">
+                </div>
+
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <select id="subject" name="subject" required>
+                        <option value="">Select a subject</option>
+                        <option value="general" {% if subject=='general' %}selected{% endif %}>General Inquiry</option>
+                        <option value="collaboration" {% if subject=='collaboration' %}selected{% endif %}>Collaboration</option>
+                        <option value="support" {% if subject=='support' %}selected{% endif %}>Support</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="role">Role</label>
+                    <select id="role" name="role" required>
+                        <option value="">Select your role</option>
+                        <option value="vet" {% if role=='vet' %}selected{% endif %}>Vet</option>
+                        <option value="ngo" {% if role=='ngo' %}selected{% endif %}>NGO</option>
+                        <option value="pet_owner" {% if role=='pet_owner' %}selected{% endif %}>Pet Owner</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="5" required placeholder="Type your message here">{{ message }}</textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Submit</button>
+            </form>
+
+            <div id="responseMessage"></div>
+
+            <div class="direct-contact">
+                <h3>Reach us Directly</h3>
+                <p>Email: <a href="mailto:anicare.contactus@gmail.com">anicare.contactus@gmail.com</a></p>
+                <p>Phone: +91 8433901697</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-privacy">
+        <p>We respect your privacy. Your information is never shared.</p>
+    </div>
+</div>
+
+<!-- AJAX submission -->
+<script>
+document.getElementById('contactForm').addEventListener('submit', function(e){
+    e.preventDefault();
+
+    const btn = this.querySelector('button[type="submit"]');
+    btn.disabled = true;
+
+    // Collect form data
+    const formData = new FormData(this);
+
+    fetch('{{ url_for("contact") }}', {
+        method: 'POST',
+        body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+        const msgDiv = document.getElementById('responseMessage');
+        msgDiv.innerHTML = `<p style="color:${data.success ? 'green' : 'red'}">${data.message}</p>`;
+        if(data.success) this.reset();
+        setTimeout(() => { msgDiv.innerHTML = ''; }, 5000);
+    })
+    .catch(() => {
+        const msgDiv = document.getElementById('responseMessage');
+        msgDiv.innerHTML = `<p style="color:red">Error sending message. Please try again.</p>`;
+        setTimeout(() => { msgDiv.innerHTML = ''; }, 5000);
+    })
+    .finally(() => { btn.disabled = false; });
+});
+</script>
+
+</body>
+</html>

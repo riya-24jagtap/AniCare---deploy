@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Report a Stray Animal</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/report_stray.css') }}">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+  <script defer src="{{ url_for('static', filename='js/report_stray.js') }}"></script>
+</head>
+<body style="background: url('{{ url_for('static', filename='images/consultation_history_bg.jpg') }}') no-repeat center center fixed; background-size: cover;">
+
+<header class="navbar">
+  <div class="navbar-left">
+    <img src="{{ url_for('static', filename='images/anicare_logo.png') }}" alt="AniCare Logo" class="logo-img">
+  </div>
+  <nav>
+    <a href="{{ url_for('home') }}">Home</a>
+    <a href="{{ url_for('about') }}">About</a>
+    <a href="{{ url_for('contact') }}">Contact</a>
+  </nav>
+</header>
+
+<br>
+<h1 style="text-align: center; margin-bottom: 20px; color: #91614bff;">Report Stray Animal</h1>
+
+<div style="text-align: right; margin: 10px 20px;">
+  <a href="{{ url_for('user_dashboard') }}" class="btn-back">← Back to Dashboard</a>
+</div>
+
+<div class="container">
+
+  <form id="reportForm" method="POST" enctype="multipart/form-data">
+    
+    <!-- Animal Type -->
+    <label for="animalType">Animal Type:</label>
+    <select id="animalType" name="animalType" required>
+      <option value="">Select</option>
+      <option value="dog" {% if form_data and form_data.get('animalType') == 'dog' %}selected{% endif %}>Dog</option>
+      <option value="cat" {% if form_data and form_data.get('animalType') == 'cat' %}selected{% endif %}>Cat</option>
+      <option value="other" {% if form_data and form_data.get('animalType') == 'other' %}selected{% endif %}>Other</option>
+    </select>
+
+    <!-- 'Other' Animal -->
+    <div id="otherAnimalDiv" style="display: {% if form_data and form_data.get('animalType') == 'other' %}block{% else %}none{% endif %}; margin-top: 10px;">
+      <label for="otherAnimal">Please specify:</label>
+      <input type="text" id="otherAnimal" name="otherAnimal" placeholder="Enter animal type" value="{{ form_data.get('otherAnimal','') if form_data else '' }}">
+    </div>
+
+    <!-- Description -->
+    <label for="description">Description:</label>
+    <textarea id="description" name="description" rows="3" required>{{ form_data.get('description','') if form_data else '' }}</textarea>
+
+    <!-- Photo Upload -->
+    <div class="form-section">
+      <div class="form-group">
+        <label for="photo">Upload Photo:</label>
+        <div class="custom-file-input">
+          <button type="button" class="choose-btn wide" onclick="document.getElementById('photo').click()">Choose File</button>
+          <input type="file" id="photo" name="photo" accept="image/png, image/jpeg, image/jpg" style="display: none;" onchange="previewPhoto(this, 'photoPreview')">
+          <div id="photoPreview"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Location -->
+    <label for="location">Your Location:</label>
+    <input type="text" id="location" name="location" placeholder="Click detect or enter manually" readonly value="{{ form_data.get('location','') if form_data else '' }}">
+    <div class="location-box" id="liveLocationInfo"></div>
+    <input type="hidden" name="latitude" id="latitude" value="{{ form_data.get('latitude','') if form_data else '' }}">
+    <input type="hidden" name="longitude" id="longitude" value="{{ form_data.get('longitude','') if form_data else '' }}">
+    <button type="button" id="detectBtn">📍 Detect My Location</button>
+    <button type="button" id="showNearbyBtn">🔍 Show Nearby NGOs</button>
+    <div id="nearbyResults"></div>
+
+    <!-- NGO Dropdown -->
+    <label for="ngo">Select NGO to report:</label>
+    <select name="ngo_id" id="ngo_id" required>
+      <option value="">-- Select an NGO --</option>
+      {% for ngo in nearest_ngos %}
+        <option value="{{ ngo.id }}" {% if form_data and form_data.get('ngo_id')|int == ngo.id %}selected{% endif %}>
+          {{ ngo.name }} - {{ ngo.address }} ({{ ngo.distance_km }} km)
+        </option>
+      {% endfor %}
+    </select>
+
+    <button type="submit" id="submitReport">📢 Submit Report</button>
+    
+  </form>
+
+  <h2 style="margin-top: 40px; text-align: center;">My Submitted Reports</h2>
+  <div class="reports-table-container">
+    <table id="reportsTable">
+      <thead>
+        <tr>
+          <th>Case ID</th>
+          <th>Animal Type</th>
+          <th>Description</th>
+          <th>Location</th>
+          <th>NGO Assigned</th>
+          <th>Status</th>
+          <th>Reporter</th>
+          <th>Reported At</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in reports %}
+        <tr>
+          <td>{{ r.case_id }}</td>
+          <td>{{ r.animal_type }}</td>
+          <td>{{ r.description }}</td>
+          <td>{{ r.location }}</td>
+          <td>{{ r.ngo_name or '-' }}</td>
+          <td>
+            {% if r.status == 'Pending' %}
+              <span class="status-pending">{{ r.status }}</span>
+            {% elif r.status == 'In Progress' %}
+              <span class="status-assigned">{{ r.status }}</span>
+            {% elif r.status == 'Resolved' %}
+              <span class="status-completed">{{ r.status }}</span>
+            {% else %}
+              {{ r.status }}
+            {% endif %}
+          </td>
+          <td>{{ r.reporter_name or '-' }}</td>
+          <td>{{ r.report_datetime.strftime("%d-%m-%Y %H:%M") if r.report_datetime else '-' }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+  </div>
+
+</div>
+
+</body>
+</html>
