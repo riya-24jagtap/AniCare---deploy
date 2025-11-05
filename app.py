@@ -1261,10 +1261,12 @@ def user_dashboard():
     print("DEBUG: user_role =", user_role)
 
     try:
-        # Fetch pets
+        # ------------------- GET: Render Booking Page -------------------
+        owner_id = current_user.id  # ✅ Correct source of logged-in user
+
         pets = db.session.execute(
-            text("SELECT * FROM pet_records WHERE owner_id=:uid ORDER BY created_at DESC"),
-            {"uid": user_id}
+            text("SELECT id, pet_name FROM pet_records WHERE owner_id=:owner_id"),
+            {"owner_id": owner_id}
         ).mappings().all()
 
         # Fetch appointments with vet name
@@ -1945,7 +1947,7 @@ def book_appointment():
                 {
                     "vet_id": vet_id,
                     "pet_id": pet_id,
-                    "user_id": user_id,
+                    "user_id": current_user.id,
                     "pet_name": pet['pet_name'],
                     "appt_date": appointment_date_str,
                     "appt_time": appointment_time_str,
