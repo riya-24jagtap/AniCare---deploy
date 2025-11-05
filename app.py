@@ -30,30 +30,36 @@ app = Flask(__name__, template_folder="templates")
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev_fallback_key")
 
 # ------------------- DATABASE SETUP -------------------
+# ------------------- DATABASE SETUP -------------------
 raw_db_url = os.environ.get("DATABASE_URL")
-uri = urlparse(raw_db_url)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = (
-    f"mysql+pymysql://{uri.username}:{uri.password}"
-    f"@{uri.hostname}:{uri.port or 3306}/{uri.path.lstrip('/')}"
-)
+if raw_db_url:  # ✅ Running on Render / Production
 
-AIVEN_CA_PEM = os.environ.get("AIVEN_CA_PEM")
+    # Handle case where env var might be bytes
+    if isinstance(raw_db_url, bytes):
+        raw_db_url = raw_db_url.decode()
 
-if AIVEN_CA_PEM:
-    cert_file = tempfile.NamedTemporaryFile(delete=False, suffix=".pem")
-    cert_file.write(AIVEN_CA_PEM.encode("utf-8"))
-    cert_file.flush()
+    uri = urlparse(raw_db_url)
 
-    app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
-        "connect_args": {
-            "ssl": {
-                "ca": cert_file.name
+    app.config['SQLALCHEMY_DATABASE_URI'] = (
+        f"mysql+pymysql://{uri.username}:{uri.password}"
+        f"@{uri.hostname}:{uri.port or 3306}/{uri.path.lstrip('/')}"
+    )
+
+    AIVEN_CA_PEM = os.environ.get("AIVEN_CA_PEM")
+    if AIVEN_CA_PEM:
+        cert_file = tempfile.NamedTemporaryFile(delete=False, suffix=".pem")
+        cert_file.write(AIVEN_CA_PEM.encode("utf-8"))
+        cert_file.flush()
+
+        app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+            "connect_args": {
+                "ssl": {"ca": cert_file.name}
             }
         }
-    }
-else:
-    # Local fallback for development
+
+else:  # ✅ Local development fallback (VS Code / your laptop)
+    print("🌍 Running locally — Using Local Database")
     app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:root@localhost:3306/anicare_db"
     app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
         "pool_recycle": 280,
@@ -62,16 +68,15 @@ else:
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Initialize SQLAlchemy
 db.init_app(app)
 
-# ✅ TEMPORARY: Create tables on Render once
+# ✅ Only create tables when app runs (safe for local and Render first boot)
 with app.app_context():
     try:
         db.create_all()
-        print("✅ All tables created successfully!")
+        print("✅ Tables OK")
     except Exception as e:
-        print("⚠️ Error creating tables:", e)
+        print("⚠️ DB Setup Error:", e)
 
 
 login_manager = LoginManager()
