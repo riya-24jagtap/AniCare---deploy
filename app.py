@@ -378,77 +378,51 @@ def logout():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        role = request.form.get('role')  # may be None if user didn't pick
+        role = request.form.get('role')
         email = (request.form.get('email') or "").strip()
         password = request.form.get('password') or ""
-        print(f"🪪 Attempting login for {email} (role={role}) -- password length {len(password)}")
 
-        user = None
-
-        # Attempt role-based lookup first
+        # Role-based lookup
         if role == 'vet':
             user = Vet.query.filter_by(email=email).first() or User.query.filter_by(email=email).first()
+            user_role = "vet"
         elif role == 'ngo':
             user = NGO.query.filter_by(email=email).first() or User.query.filter_by(email=email).first()
+            user_role = "ngo"
         else:
-            # No role or pet owner → try all tables
-            user = (
-                User.query.filter_by(email=email).first() or 
-                Vet.query.filter_by(email=email).first() or 
-                NGO.query.filter_by(email=email).first()
-            )
+            user = User.query.filter_by(email=email).first() or Vet.query.filter_by(email=email).first() or NGO.query.filter_by(email=email).first()
+            if isinstance(user, Vet): user_role = "vet"
+            elif isinstance(user, NGO): user_role = "ngo"
+            else: user_role = "pet_owner"
 
         if not user:
-            print("❌ No such email found in ANY user table")
             flash("Invalid email or password", "error")
             return redirect(url_for('login'))
 
-        print(f"✅ Found user in DB: {user.email} (table={user.__class__.__name__})")
-        print(f"🔒 Stored password prefix: {str(user.password)[:25]}...")
-
-        # ✅ Password verification (hashed + legacy plaintext support)
-        valid = False
         try:
-            # Try normal hash check
             valid = check_password_hash(user.password, password)
         except:
-            pass
-        
-        # Fallback if the stored password was plain text (older DB)
-        if not valid and user.password == password:
-            valid = True
+            valid = user.password == password
 
         if not valid:
-            print("❌ Password mismatch")
             flash("Invalid email or password", "error")
             return redirect(url_for('login'))
-
-        # ✅ Determine role
-        user_role = getattr(user, "role", None)
-        if not user_role:
-            if isinstance(user, Vet): 
-                user_role = 'vet'
-            elif isinstance(user, NGO): 
-                user_role = 'ngo'
-            else: 
-                user_role = 'pet_owner'
-
-        session['role'] = user_role
-        print(f"🎉 LOGIN SUCCESS → {user.email} as {user_role}")
 
         login_user(user)
 
-        # ✅ Redirect based on role
-        if user_role == 'vet':
-            return redirect(url_for('vet_dashboard'))
-        elif user_role == 'ngo':
-            return redirect(url_for('ngo_dashboard'))
-        else:
-            return redirect(url_for('user_dashboard'))
+        session['role'] = user_role
+        session['user_id'] = user.id
 
-    # GET request → Show login screen
-    print("🌀 Login page rendered")
-    return render_template('sign-in.html')
+        print(f"✅ Login success → {email} as {user_role}")
+
+        if user_role == "vet":
+            return redirect(url_for("vet_dashboard"))
+        elif user_role == "ngo":
+            return redirect(url_for("ngo_dashboard"))
+        else:
+            return redirect(url_for("user_dashboard"))
+
+    return render_template("sign-in.html")
 
 @app.route('/register', methods=['GET', 'POST'])
 
