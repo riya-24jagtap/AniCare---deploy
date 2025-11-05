@@ -1965,8 +1965,12 @@ def book_appointment():
 
     # ------------------- GET: Render Booking Page -------------------
     pets = db.session.execute(
-        text("SELECT id, pet_name FROM pet_records WHERE owner_id=:owner_id"),
-        {"owner_id": user_id}
+        text("""
+            SELECT id, pet_name 
+            FROM pet_records 
+            WHERE (owner_id=:uid OR user_id=:uid)
+        """),
+        {"uid": current_user.id}
     ).mappings().all()
 
     vets = db.session.execute(
