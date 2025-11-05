@@ -24,7 +24,6 @@ import tempfile
 from flask_sqlalchemy import SQLAlchemy
 import ssl
 
-db = SQLAlchemy()
 app = Flask(__name__, template_folder="templates")
 
 # Secret key from environment variable
