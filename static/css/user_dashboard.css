@@ -106,9 +106,11 @@ nav a.logout-btn {
   min-height: 88vh;
   padding-left: 60px;
   background: url("../images/user_dashboardbg.jpg") no-repeat right center;
-  background-size: cover;
-  background-position: left center;
-  position: relative;  
+  background-size: contain;   
+  background-position: right center; 
+  position: relative;
+  overflow-x: hidden;
+  max-width: 100vw;  
 }
 
 
@@ -279,4 +281,7 @@ h1 {
 }
 html, body {
   overflow-x: hidden;
+}
+* {
+  max-width: 100%;
 }
