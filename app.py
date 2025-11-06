@@ -24,6 +24,7 @@ import tempfile
 from flask_sqlalchemy import SQLAlchemy
 import ssl
 
+
 app = Flask(__name__, template_folder="templates")
 
 # Secret key from environment variable
@@ -483,19 +484,39 @@ def register():
             elif role == 'ngo':
                 address1 = request.form.get('address1', '').strip()
                 address2 = request.form.get('address2', '').strip()
-                # Combine the two into one final address
+
+                # Combine address lines
                 full_address = f"{address1}, {address2}".strip(", ")
+
+                # ---------- AUTO GEOCODING (No API Key Required) ----------
+                import requests
+                latitude = None
+                longitude = None
+                try:
+                    geo_url = f"https://nominatim.openstreetmap.org/search?format=json&q={full_address}"
+                    response = requests.get(geo_url, headers={'User-Agent': 'AniCare/1.0'})
+                    geo_data = response.json()
+
+                    if geo_data:
+                        latitude = float(geo_data[0]["lat"])
+                        longitude = float(geo_data[0]["lon"])
+                except Exception as geo_error:
+                    print("Geocoding failed:", geo_error)
+                # ----------------------------------------------------------
 
                 new_ngo = NGO(
                     name=name,
                     role=role,
                     email=email,
                     phone=phone,
-                    address=full_address,          # Save full formatted address
-                    location=address2,             # Location is the area/city part
+                    address=full_address,
+                    location=address2,      # City / Area
+                    latitude=latitude,
+                    longitude=longitude,
                     password=hashed_password
                 )
                 db.session.add(new_ngo)
+
 
 
             else:
@@ -2187,10 +2208,12 @@ def ngo_dashboard():
 
     ngo_info = {
         "name": ngo.name,
-        "admin": ngo.name,
         "email": ngo.email,
-        "contact": ngo.phone
+        "phone": ngo.phone,
+        "address": ngo.address,
+        "location": ngo.location
     }
+
 
     return render_template(
         "ngo_dashboard.html",
