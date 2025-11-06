@@ -102,13 +102,15 @@ nav a.logout-btn {
 
 .content {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;  /* stack welcome + dashboard */
+  justify-content: flex-start;
+  align-items: center;     /* keep centered horizontally */
   padding: 40px 20px;
   min-height: calc(100vh - 85px);
   background: url("../images/user_dashboardbg.jpg") no-repeat center;
   background-size: cover;
 }
+
 
 
 .welcome {
@@ -191,16 +193,18 @@ h1 {
 }
 
 .profile-box {
-  position: static;
-  margin-top: 25px;
+  margin-top: 10px;
+  margin-bottom: 20px;
   width: 100%;
-  max-width: 500px;
-  padding: 15px;
+  max-width: 520px;
+  padding: 14px 18px;
   background-color: #f7e4d8;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
   text-align: center;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
+
 
 .profile-box p {
     margin: 0;
