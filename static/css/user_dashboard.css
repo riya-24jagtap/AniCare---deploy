@@ -101,14 +101,17 @@ nav a.logout-btn {
 
 .content {
   display: flex;
-  justify-content: flex-start; /* keep container on left */
+  justify-content: flex-start;
   align-items: center;
-  min-height: 88vh; /* reduce overall height from 100vh */
+  min-height: 88vh;
   padding-left: 60px;
   background: url("../images/user_dashboardbg.jpg") no-repeat right center;
-  background-size: 99.99% auto; /* increase width to cover extra space */
-  background-position: left center; 
+  background-size: 99.99% auto;
+  background-position: left center;
+
+  position: relative;  /* ✅ ADD THIS */
 }
+
 
 
 
@@ -195,6 +198,7 @@ h1 {
     z-index: 100;
 }
 
+
 .profile-box p {
     margin: 0;
     font-size: 17.9px;
@@ -217,32 +221,37 @@ h1 {
     font-size: 14px;
   }
 }
-/* ----------- TABLETS (max-width: 992px) ----------- */
+
+/* ✅ Tablet */
 @media (max-width: 992px) {
-
-  .content {
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 30px 20px;
-    background-size: cover; /* prevent awkward cutoff */
-  }
-
   .profile-box {
-    position: relative;
-    top: unset;
-    right: unset;
-    margin: 0 auto 25px auto; /* center above dashboard */
-    width: auto;
-    max-width: 500px;
-    text-align: center;
-  }
-
-  .dashboard-container {
-    width: 90%;
-    max-width: 520px;
+    width: 320px;
+    right: 60px;
+    top: 140px;
+    font-size: 16px;
   }
 }
+
+/* ✅ Large Phones */
+@media (max-width: 768px) {
+  .profile-box {
+    width: 270px;
+    right: 40px;
+    top: 130px;
+    font-size: 15px;
+  }
+}
+
+/* ✅ Small Phones */
+@media (max-width: 480px) {
+  .profile-box {
+    width: 220px;
+    right: 20px;
+    top: 120px;
+    font-size: 14px;
+  }
+}
+
 
 /* ----------- MOBILE (max-width: 600px) ----------- */
 @media (max-width: 600px) {
@@ -258,11 +267,6 @@ h1 {
 
   .content {
     padding: 20px 10px;
-  }
-
-  .profile-box {
-    font-size: 15px;
-    padding: 10px 12px;
   }
 
   h1 {
