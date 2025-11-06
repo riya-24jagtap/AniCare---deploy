@@ -11,7 +11,6 @@
   --border-dark: rgba(75, 54, 33, 0.25);
 }
 
-
 * {
   margin: 0;
   padding: 0;
@@ -101,19 +100,29 @@ nav a.logout-btn {
 }
 
 .content {
-  padding: 40px 20px;
-  min-height: calc(100vh - 85px);
-  background: url("../images/user_dashboardbg.jpg") no-repeat center;
-  background-size: cover;
-
   display: flex;
-  flex-direction: column;
-  align-items: center; 
+  justify-content: flex-start; /* keep container on left */
+  align-items: center;
+  min-height: 88vh; /* reduce overall height from 100vh */
+  padding-left: 60px;
+  background: url("../images/user_dashboardbg.jpg") no-repeat right center;
+  background-size: 99.99% auto; /* increase width to cover extra space */
+  background-position: left center; 
 }
 
 
 
-
+.dashboard-container {
+  background: #d9d9d9;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-radius: 50px;
+  width: 600px;   /* fixed width so it doesn’t shrink */
+  padding: 40px 30px 60px;
+  box-shadow: 0 8px 30px rgba(70, 57, 57, 0.1);
+  border: 1px solid rgba(136, 134, 134, 0.25);
+  text-align: center;
+}
 .welcome {
   font-size: 20px;
   font-weight: 600;
@@ -131,23 +140,7 @@ h1 {
   background-color: #8F9779 !important;
   color: white !important;
 }
-.dashboard-container {
-  background: rgba(217, 217, 217, 0.75);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
 
-  width: 90%;               /* allow responsive shrinking */
-  max-width: 450px;         /* prevent overflow */
-  margin: auto;             /* center container */
-  padding: 35px 22px 45px;  /* slightly tighter padding */
-
-  border-radius: 35px;
-  border: 1px solid rgba(136, 134, 134, 0.25);
-  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.12);
-
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
 
 .action-btn {
   display: block;
@@ -163,10 +156,6 @@ h1 {
   transition: 0.3s ease;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
   background-clip: padding-box;
-}
-.action-btn {
-  width: 100%;
-  box-sizing: border-box;  /* ensures padding doesn't overflow */
 }
 
 .btn-1 { background-color: var(--btn-1); }
@@ -194,23 +183,17 @@ h1 {
 }
 
 .profile-box {
-  width: auto;
-  max-width: 100%;
-  background-color: #f7e4d8;
-  padding: 12px 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-  font-weight: 600;
-  font-size: 18px;
-  color: #3b2515;
-
-  /* ✅ ALIGN TO RIGHT */
-  align-self: flex-end;
-  margin-right: 40px;
-  margin-bottom: 20px;
+    position: absolute; 
+    top: 150px; 
+    right: 110px; 
+    width: 390px; 
+    padding: 12px 15px;
+    background-color: #f7e4d8; 
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+    text-align: left;
+    z-index: 100;
 }
-
-
 
 .profile-box p {
     margin: 0;
@@ -232,67 +215,5 @@ h1 {
   .nav-links {
     gap: 15px;
     font-size: 14px;
-  }
-}
-
-/* -------- RESPONSIVE BREAKPOINTS -------- */
-
-/* Tablets */
-@media (max-width: 1024px) {
-  .content {
-    padding: 40px 15px;
-    background-position: center;
-  }
-}
-
-/* Large Phones / Small Tablets */
-@media (max-width: 768px) {
-  header {
-    padding: 10px 20px;
-  }
-
-  nav a {
-    margin-left: 18px;
-    font-size: 15px;
-  }
-}
-
-/* Mobile */
-@media (max-width: 480px) {
-
-  header {
-    padding: 8px 12px;
-  }
-
-  nav a {
-    font-size: 13px;
-    margin-left: 12px;
-  }
-
-  h1 {
-    font-size: 24px;
-  }
-
-  .dashboard-container {
-    padding: 28px 18px 45px;
-  }
-
-  .action-btn {
-    font-size: 15px;
-    padding: 12px;
-  }
-}
-@media (max-width: 480px) {
-
-  .dashboard-container {
-    width: 95%;
-    max-width: 380px;
-    padding: 25px 18px 40px;
-  }
-
-  .action-btn {
-    font-size: 14.5px;
-    padding: 11px;
-    margin: 10px 0;
   }
 }
