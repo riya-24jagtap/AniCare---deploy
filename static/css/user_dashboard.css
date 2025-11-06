@@ -217,3 +217,60 @@ h1 {
     font-size: 14px;
   }
 }
+/* ----------- TABLETS (max-width: 992px) ----------- */
+@media (max-width: 992px) {
+
+  .content {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 30px 20px;
+    background-size: cover; /* prevent awkward cutoff */
+  }
+
+  .profile-box {
+    position: relative;
+    top: unset;
+    right: unset;
+    margin: 0 auto 25px auto; /* center above dashboard */
+    width: auto;
+    max-width: 500px;
+    text-align: center;
+  }
+
+  .dashboard-container {
+    width: 90%;
+    max-width: 520px;
+  }
+}
+
+/* ----------- MOBILE (max-width: 600px) ----------- */
+@media (max-width: 600px) {
+
+  header {
+    padding: 8px 15px;
+  }
+
+  nav a {
+    margin-left: 12px;
+    font-size: 14px;
+  }
+
+  .content {
+    padding: 20px 10px;
+  }
+
+  .profile-box {
+    font-size: 15px;
+    padding: 10px 12px;
+  }
+
+  h1 {
+    font-size: 26px;
+  }
+
+  .action-btn {
+    font-size: 15px;
+    padding: 12px;
+  }
+}
