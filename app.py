@@ -481,19 +481,22 @@ def register():
                 db.session.add(new_vet)
 
             elif role == 'ngo':
-                address = request.form.get('address', '').strip()
-                location = request.form.get('location', '').strip()
+                address1 = request.form.get('address1', '').strip()
+                address2 = request.form.get('address2', '').strip()
+                # Combine the two into one final address
+                full_address = f"{address1}, {address2}".strip(", ")
 
                 new_ngo = NGO(
                     name=name,
                     role=role,
                     email=email,
                     phone=phone,
-                    address=address,
-                    location=location,
+                    address=full_address,          # Save full formatted address
+                    location=address2,             # Location is the area/city part
                     password=hashed_password
                 )
                 db.session.add(new_ngo)
+
 
             else:
                 new_user = User(
