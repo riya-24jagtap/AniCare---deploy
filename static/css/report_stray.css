@@ -298,3 +298,81 @@ button:disabled {
 #reportsTable th {
   background-color: #f2f2f2;
 }
+/* ================== RESPONSIVE FIXES ================== */
+
+/* Tablets */
+@media (max-width: 900px) {
+  .navbar {
+    padding: 10px 20px;
+  }
+
+  nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  nav a {
+    margin-left: 0;
+    font-size: 15px;
+  }
+
+  .container {
+    max-width: 90%;
+    margin: 30px auto;
+    padding: 25px;
+  }
+}
+
+/* Phones */
+@media (max-width: 600px) {
+
+  .navbar {
+    flex-direction: column;
+    height: auto;
+    padding: 12px 15px;
+    gap: 6px;
+  }
+
+  nav {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  nav a {
+    margin: 4px 6px;
+    font-size: 14px;
+  }
+
+  .container {
+    width: 92%;
+    padding: 20px;
+    background: rgba(255,255,255,0.85); /* improve readability on mobile */
+  }
+
+  .custom-file-input {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  #photoPreview img {
+    height: 65px;
+  }
+
+  button {
+    font-size: 15px;
+    padding: 12px;
+  }
+}
+
+/* Very Small Phones */
+@media (max-width: 400px) {
+  nav a {
+    font-size: 13px;
+  }
+
+  button {
+    font-size: 14px;
+  }
+}

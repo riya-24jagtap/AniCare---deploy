@@ -7,10 +7,8 @@
 
 body {
   position: relative;
-  background: url('/static/images/bg2.jpg') no-repeat center center;
-  background-size: cover;
-  background-position: center;
-  min-height: 100vh;
+  background: url('/static/images/bg2.jpg') no-repeat center center/cover;
+  color: #4a2e1c;
 }
 
 header {
@@ -20,10 +18,10 @@ header {
   justify-content: space-between;
   align-items: center;
 }
-
+/* 
 header img {
   height: 40px;
-}
+} */
 
 .logo {
   width: 70px;
@@ -75,8 +73,12 @@ body > .main-container {
 
 .main-container {
   display: flex;
-  height: 600px;
+  min-height: 60vh; /* flexible */
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 1200px;
 }
+
 
 .pic {
   width: 150px;
@@ -351,4 +353,25 @@ footer h3 {
   color: #6e3f20;
   margin: 2px 0;
   font-size: 13px;
+}
+@media (max-width: 768px) {
+  .main-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .right {
+    border-radius: 0;
+    padding: 40px 20px;
+  }
+
+  form {
+    width: 90%;
+  }
+
+  nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
 }

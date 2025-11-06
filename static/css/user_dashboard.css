@@ -101,27 +101,30 @@ nav a.logout-btn {
 
 .content {
   display: flex;
-  justify-content: flex-start; /* keep container on left */
+  justify-content: center;
   align-items: center;
-  min-height: 88vh; /* reduce overall height from 100vh */
-  padding-left: 60px;
-  background: url("../images/user_dashboardbg.jpg") no-repeat right center;
-  background-size: 99.99% auto; /* increase width to cover extra space */
-  background-position: left center; 
+  padding: 40px 20px;
+  min-height: calc(100vh - 85px);
+  background: url("../images/user_dashboardbg.jpg") no-repeat center;
+  background-size: cover;
 }
 
 
-
 .dashboard-container {
-  background: #d9d9d9;
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-  border-radius: 50px;
-  width: 600px;   /* fixed width so it doesn’t shrink */
-  padding: 40px 30px 60px;
-  box-shadow: 0 8px 30px rgba(70, 57, 57, 0.1);
+  background: rgba(217, 217, 217, 0.75); /* smooth translucent */
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+
+  width: 100%;
+  max-width: 520px;
+  padding: 40px 28px 55px;
+
+  border-radius: 35px;
   border: 1px solid rgba(136, 134, 134, 0.25);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.12);
+
   text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 .welcome {
   font-size: 20px;
@@ -183,16 +186,15 @@ h1 {
 }
 
 .profile-box {
-    position: absolute; 
-    top: 150px; 
-    right: 110px; 
-    width: 390px; 
-    padding: 12px 15px;
-    background-color: #f7e4d8; 
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
-    text-align: left;
-    z-index: 100;
+  position: static;
+  margin-top: 25px;
+  width: 100%;
+  max-width: 500px;
+  padding: 15px;
+  background-color: #f7e4d8;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
 .profile-box p {
@@ -215,5 +217,53 @@ h1 {
   .nav-links {
     gap: 15px;
     font-size: 14px;
+  }
+}
+
+/* -------- RESPONSIVE BREAKPOINTS -------- */
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .content {
+    padding: 40px 15px;
+    background-position: center;
+  }
+}
+
+/* Large Phones / Small Tablets */
+@media (max-width: 768px) {
+  header {
+    padding: 10px 20px;
+  }
+
+  nav a {
+    margin-left: 18px;
+    font-size: 15px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+
+  header {
+    padding: 8px 12px;
+  }
+
+  nav a {
+    font-size: 13px;
+    margin-left: 12px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  .dashboard-container {
+    padding: 28px 18px 45px;
+  }
+
+  .action-btn {
+    font-size: 15px;
+    padding: 12px;
   }
 }

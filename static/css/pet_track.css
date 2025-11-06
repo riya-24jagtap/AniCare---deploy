@@ -212,3 +212,92 @@ nav a.active::after {
   margin-top: 10px;
   color: #444;
 }
+/* ===================== RESPONSIVE FIXES ===================== */
+
+/* Tablets */
+@media (max-width: 992px) {
+  .tracker-container {
+    padding: 0 15px;
+  }
+
+  .quick-details {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
+
+  .map-container {
+    height: 300px;
+  }
+
+  nav a {
+    margin-left: 18px;
+    font-size: 15px;
+  }
+}
+
+/* Mobile Screens */
+@media (max-width: 768px) {
+
+  /* Navbar stacks neatly */
+  .navbar {
+    flex-direction: column;
+    height: auto;
+    padding: 15px;
+    gap: 10px;
+  }
+
+  nav {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  nav a {
+    margin: 6px;
+    font-size: 14px;
+  }
+
+  .logo-img {
+    height: 55px;
+    width: 55px;
+  }
+
+  .quick-details {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 15px;
+  }
+
+  .map-container {
+    height: 260px;
+  }
+
+  .buttons {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .buttons button {
+    width: 100%;
+    padding: 14px;
+  }
+
+  .map-mode-toggle select {
+    margin-top: 8px;
+    width: 100%;
+  }
+}
+
+/* Extra Small Phones */
+@media (max-width: 480px) {
+  .header {
+    font-size: 20px;
+    padding: 12px;
+  }
+
+  .current-time {
+    font-size: 14px;
+  }
+
+  .map-container {
+    height: 220px;
+  }
+}

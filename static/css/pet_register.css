@@ -612,3 +612,96 @@ input[type="file"] {
     transform: translate(-50%, -50%) rotate(1turn);
   }
 }
+/* ------- MOBILE & TABLET RESPONSIVENESS FIXES ------- */
+
+@media (max-width: 1024px) {
+
+  .form-container {
+    max-width: 95%;
+    padding: 25px 25px;
+  }
+
+  .form-group label {
+    flex: 1 1 140px; /* reduce width */
+    font-size: 15px;
+  }
+}
+
+/* Tablets & Small Laptops */
+@media (max-width: 768px) {
+
+  nav a {
+    margin-left: 15px;
+    font-size: 14px;
+  }
+
+  .form-group {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .form-group label {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+  }
+
+  .buttons {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .buttons button {
+    width: 100%;
+  }
+
+  .custom-file-input {
+    max-width: 100%;
+  }
+}
+
+/* Phones */
+@media (max-width: 480px) {
+
+  header {
+    flex-direction: column;
+    height: auto;
+    padding: 10px 15px;
+  }
+
+  nav {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  nav a {
+    margin: 6px;
+  }
+
+  .logo img {
+    width: 55px;
+    height: 55px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  .form-container {
+    padding: 20px;
+  }
+
+  .form-section h2 {
+    font-size: 18px;
+  }
+
+  .buttons button {
+    font-size: 14px;
+    padding: 10px;
+  }
+}

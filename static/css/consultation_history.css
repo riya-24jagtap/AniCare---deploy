@@ -15,8 +15,8 @@ body {
   background-color: #d1a87a;
   padding: 10px 30px;
   height: 80px;
-  box-sizing: border-box;
   width: 100%;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
 }
 
 .navbar-left {
@@ -30,9 +30,11 @@ body {
   object-fit: contain;
 }
 
+/* Nav links */
 nav {
   display: flex;
   align-items: center;
+  flex-wrap: wrap; /* helps on small screens */
 }
 
 nav a {
@@ -71,27 +73,28 @@ nav a.active::after {
   font-weight: 600;
   transition: background-color 0.3s;
 }
-
 .btn-back:hover {
   background-color: #6d765e;
 }
 
-/* Container for the table */
+/* Container */
 .history-container {
   max-width: 1000px;
   margin: 40px auto;
   padding: 30px;
-  background:  rgba(255, 255, 255, 0.6);;
-  border-radius: 12px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  background: rgba(255,255,255,0.75);
+  border-radius: 14px;
+  box-shadow: 0px 4px 14px rgba(0,0,0,0.12);
+  overflow-x: auto; /* Enables horizontal scroll on small screens */
 }
 
-/* Table styling */
+/* Table */
 table {
   width: 100%;
-  border-collapse: separate; /* needed for border-radius to work */
-  border-spacing: 0;     
-  background: rgba(255, 255, 255, 0.6);
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 650px; /* prevents table from shrinking too much */
+  background: rgba(255,255,255,0.6);
 }
 
 th, td {
@@ -114,44 +117,48 @@ tr:nth-child(even) td {
 
 tr:hover td {
   background-color: #e8f0fe;
-  transition: background 0.2s ease;
 }
 
-/* Rounded corners for table */
-table th:first-child {
-  border-top-left-radius: 12px;
-}
+/* Corner rounding */
+table th:first-child { border-top-left-radius: 12px; }
+table th:last-child { border-top-right-radius: 12px; }
+table tr:last-child td:first-child { border-bottom-left-radius: 12px; }
+table tr:last-child td:last-child { border-bottom-right-radius: 12px; }
 
-table th:last-child {
-  border-top-right-radius: 12px;
-}
-
-table tr:last-child td:first-child {
-  border-bottom-left-radius: 12px;
-}
-
-table tr:last-child td:last-child {
-  border-bottom-right-radius: 12px;
-}
-
-/* Empty table message */
-.history-container {
-  max-width: 1000px;
-  margin: 40px auto;
-  padding: 30px;
-  background: transparent; /* <-- this makes it solid white */
-  border-radius: 10px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-
-/* Responsive */
+/* Responsive Tweaks */
 @media (max-width: 768px) {
-  table, th, td {
-    font-size: 0.85rem;
+  nav a {
+    margin: 8px 12px;
+    font-size: 14px;
+  }
+
+  .navbar {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 12px 18px;
   }
 
   .history-container {
-    padding: 10px;
+    padding: 18px;
+  }
+
+  th, td {
+    font-size: 0.82rem;
+  }
+}
+
+@media (max-width: 450px) {
+  .logo-img {
+    height: 50px;
+    width: 50px;
+  }
+
+  nav a {
+    font-size: 13px;
+  }
+
+  .btn-back {
+    padding: 6px 12px;
+    font-size: 14px;
   }
 }
