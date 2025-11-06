@@ -11,6 +11,7 @@
   --border-dark: rgba(75, 54, 33, 0.25);
 }
 
+
 * {
   margin: 0;
   padding: 0;
@@ -110,22 +111,6 @@ nav a.logout-btn {
 }
 
 
-.dashboard-container {
-  background: rgba(217, 217, 217, 0.75); /* smooth translucent */
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
-
-  width: 100%;
-  max-width: 520px;
-  padding: 40px 28px 55px;
-
-  border-radius: 35px;
-  border: 1px solid rgba(136, 134, 134, 0.25);
-  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.12);
-
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
 .welcome {
   font-size: 20px;
   font-weight: 600;
@@ -143,7 +128,23 @@ h1 {
   background-color: #8F9779 !important;
   color: white !important;
 }
+.dashboard-container {
+  background: rgba(217, 217, 217, 0.75);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
 
+  width: 90%;               /* allow responsive shrinking */
+  max-width: 450px;         /* prevent overflow */
+  margin: auto;             /* center container */
+  padding: 35px 22px 45px;  /* slightly tighter padding */
+
+  border-radius: 35px;
+  border: 1px solid rgba(136, 134, 134, 0.25);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.12);
+
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
 .action-btn {
   display: block;
@@ -159,6 +160,10 @@ h1 {
   transition: 0.3s ease;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
   background-clip: padding-box;
+}
+.action-btn {
+  width: 100%;
+  box-sizing: border-box;  /* ensures padding doesn't overflow */
 }
 
 .btn-1 { background-color: var(--btn-1); }
@@ -265,5 +270,19 @@ h1 {
   .action-btn {
     font-size: 15px;
     padding: 12px;
+  }
+}
+@media (max-width: 480px) {
+
+  .dashboard-container {
+    width: 95%;
+    max-width: 380px;
+    padding: 25px 18px 40px;
+  }
+
+  .action-btn {
+    font-size: 14.5px;
+    padding: 11px;
+    margin: 10px 0;
   }
 }
